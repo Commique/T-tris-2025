@@ -6,6 +6,7 @@ from variables import *
 pygame.init()
 main_window = pygame.display.set_mode((10*pixel,22*pixel), RESIZABLE)
 pygame.display.set_caption("Tétris")
+pygame.display.set_icon(Tetris.jpg)
 clock = pygame.time.Clock()
 
 while running:
