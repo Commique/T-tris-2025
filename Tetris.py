@@ -24,7 +24,7 @@ while running:
     #Variable qui contient les touches pressées
     keys = pygame.key.get_pressed()
 
-    #Enlever de la grille la pièce qui tombe (si pas collision)
+    #Enlever de la grille la pièce qui tombe
     y = -1
     for i in moving_bloc:
         y += 1
