@@ -26,10 +26,7 @@ while running:
         #Debug
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_p:
-                print("____________________________________________________")
-                for i in grille:
-                    print(i)
-                print("____________________________________________________")
+                debug(grille)
 
     if keys[pygame.K_w]:
         running = False
@@ -47,11 +44,6 @@ while running:
                 pygame.draw.rect(main_window, color[u], pygame.Rect(x*pixel + top_right_corner[0]+1, y*pixel + top_right_corner[1]+1, pixel-2, pixel-2))
     
 
-    #Si on veut modifier la taille de la fenêtre
-    if keys[pygame.K_a] and not pixel >= 50:
-        pixel += 1
-    if keys[pygame.K_z] and not pixel <= 10:
-        pixel -= 1
 
     pygame.display.flip()
 

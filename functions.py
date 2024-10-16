@@ -10,3 +10,10 @@ def update_window(width, height):
     elif height > 2.2*width:
         pixel = width//10
     return pixel
+
+
+def debug(grille):
+    print("____________________________________________________")
+    for i in grille:
+        print(i)
+    print("____________________________________________________")
