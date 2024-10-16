@@ -1,14 +1,36 @@
 from pygame import *
 from pygame.locals import *
+from random import randint as ri
 
 #Toutes nos variables
 running = True
 pixel = 30
-color = [(0,0,0),
-         (255,255,255),
-         (255,0,0),
-         (0,255,0),
-         (0,0,255)]
+color = [
+    (0,0,0),
+    (255,255,255),
+    (255,0,0),
+    (0,255,0),
+    (0,0,255)
+]
+
+blocs = [
+    [[2, 2, 2, 2]],     #I
+    [[2, 2],            #O
+     [2, 2]],
+    [[2, 2, 2],         #T
+     [0, 2, 0]],
+    [[2, 2, 2],         #L
+     [2, 0, 0]],
+    [[2, 2, 2],         #J
+     [0, 0, 2]],
+    [[2, 2, 0],         #Z
+     [0, 2, 2]],
+    [[0, 2, 2],         #S
+     [2, 2, 0]]
+]
+
+moving_bloc = blocs[ri(0, 6)]
+moving_bloc_position = [2, 3]
 
 #grille = [[0]*10]*22
 grille = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
