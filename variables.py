@@ -4,7 +4,19 @@ from random import randint as ri
 
 #Toutes nos variables
 running = True
+
+#Le standard du jeu pour plus de facilité
 pixel = 30
+
+#Toutes les directions possibles
+direction = [
+    "down",
+    "up",
+    "right",
+    "left"
+]
+
+#Toutes les couleurs possibles
 color = [
     (0,0,0),
     (255,255,255),
@@ -13,6 +25,7 @@ color = [
     (0,0,255)
 ]
 
+#Tous les blocs possibles
 blocs = [
     [[2, 2, 2, 2]],     #I
     [[2, 2],            #O
@@ -30,9 +43,12 @@ blocs = [
 ]
 
 moving_bloc = blocs[ri(0, 6)]
-moving_bloc_position = [2, 3]
+moving_bloc_position = [2, 3]   #y, x
 
+#Vraie grille
 #grille = [[0]*10]*22
+
+#Grille de test 
 grille = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
