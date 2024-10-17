@@ -8,6 +8,9 @@ running = True
 #Le standard du jeu pour plus de facilité
 pixel = 30
 
+#Vitesse (en milisecondes)
+vitesse = 1000
+
 #Toutes les directions possibles
 direction = [
     "down",
@@ -42,13 +45,13 @@ blocs = [
      [2, 2, 0]]
 ]
 
-moving_bloc = blocs[ri(0, 6)]
-moving_bloc_position = [2, 3]   #y, x
+moving_bloc_color = last_moving_bloc_color = color[ri(2,4)]
+moving_bloc = last_moving_bloc = blocs[ri(0, 6)]
+moving_bloc_position = last_moving_bloc_position = [0, 3]   #y, x
+if moving_bloc == blocs[1]:
+    moving_bloc_position = [0, 4]    
 
-#Vraie grille
-#grille = [[0]*10]*22
-
-#Grille de test 
+#Grille
 grille = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
