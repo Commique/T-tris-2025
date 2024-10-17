@@ -34,7 +34,7 @@ while running:
 
     #La pièce qui tombe toutes les 1 seconde
     if pygame.time.get_ticks() >= last_update:
-        moving_bloc, moving_bloc_position, moving_bloc_color, last_moving_bloc, last_moving_bloc_position, last_moving_bloc_color = check_down_collision(moving_bloc, moving_bloc_position, moving_bloc_color, grille, last_moving_bloc, last_moving_bloc_position, last_moving_bloc_color)
+        moving_bloc, moving_bloc_position, last_moving_bloc, last_moving_bloc_position, running = check_down_collision(moving_bloc, moving_bloc_position, grille, last_moving_bloc, last_moving_bloc_position)
         last_update = last_update = pygame.time.get_ticks() + vitesse
     
     #Tous les événements
@@ -50,19 +50,22 @@ while running:
         
         #Mouvement + Collisions /!\ IMPORTANT /!\
         if event.type == pygame.KEYUP:
+            if event.key == pygame.K_DOWN:
+                moving_bloc, moving_bloc_position, last_moving_bloc, last_moving_bloc_position, running = check_down_collision(moving_bloc, moving_bloc_position, grille, last_moving_bloc, last_moving_bloc_position)
             if event.key == pygame.K_UP:
-                if check_up_collision():
-                    moving_bloc = rotate(moving_bloc)
+                moving_bloc = check_up_collision(moving_bloc, moving_bloc_position, grille)
             if event.key == pygame.K_RIGHT:
-                if check_collision(moving_bloc, moving_bloc_position, grille, direction[2]):
-                    moving_bloc_position[1] += 1
+                moving_bloc_position = check_collision(moving_bloc, moving_bloc_position, grille, direction[2])
             if event.key == pygame.K_LEFT:
-                if check_collision(moving_bloc, moving_bloc_position, grille, direction[3]):
-                    moving_bloc_position[1] -= 1
+                moving_bloc_position = check_collision(moving_bloc, moving_bloc_position, grille, direction[3])
 
-    #Tomber vite
+    #Aller vite
     if keys[pygame.K_DOWN]:
-        moving_bloc, moving_bloc_position, moving_bloc_color, last_moving_bloc, last_moving_bloc_position, last_moving_bloc_color = check_down_collision(moving_bloc, moving_bloc_position, moving_bloc_color, grille, last_moving_bloc, last_moving_bloc_position, last_moving_bloc_color)
+        moving_bloc, moving_bloc_position, last_moving_bloc, last_moving_bloc_position, running = check_down_collision(moving_bloc, moving_bloc_position, grille, last_moving_bloc, last_moving_bloc_position)
+    if keys[pygame.K_RIGHT]:
+        moving_bloc_position = check_collision(moving_bloc, moving_bloc_position, grille, direction[2])
+    if keys[pygame.K_LEFT]:
+        moving_bloc_position = check_collision(moving_bloc, moving_bloc_position, grille, direction[3])
 
     #Redessiner la pièce qui vient de se faire enlever car la fonction n'était pas à jour
     for i in range(len(last_moving_bloc)):
@@ -80,7 +83,11 @@ while running:
     if keys[pygame.K_w]:
         running = False
 
+    #Fonction de nettoyage de la grille
+    grille = is_in_a_line(grille)
+
     #Remplissage des couleurs dans la grille
+    #Variable pour centrer la grille
     top_right_corner = [width/2 - 5*pixel, height/2 - 11*pixel]
     for y in range(len(grille)):
         for x in range(len(grille[y])):
@@ -88,6 +95,9 @@ while running:
             if grille[y][x] != 0:
                 pygame.draw.rect(main_window, color[grille[y][x]], pygame.Rect(x*pixel + top_right_corner[0]+1, y*pixel + top_right_corner[1]+1, pixel-2, pixel-2))
     
+    #Game over
+    if grille[0] != [0, 0, 0, 0, 0, 0, 0, 0, 0, 0] and moving_bloc_position[0] != 0:
+        running = False
 
     #Actualiser l'écran
     pygame.display.flip()
