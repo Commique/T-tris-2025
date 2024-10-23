@@ -4,6 +4,7 @@ from random import randint as ri
 
 #Toutes nos variables
 running = True
+game_on = True
 
 #Le standard du jeu pour plus de facilité
 pixel = 30

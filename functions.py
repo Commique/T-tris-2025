@@ -119,6 +119,9 @@ def rotate(moving_bloc):
 
 #Fonction de nettoyage des lignes
 def is_in_a_line(grille):
+
+
+    """
     for i in range(len(grille)):
         if grille[i][0]*grille[i][1]*grille[i][2]*grille[i][3]*grille[i][4]*grille[i][5]*grille[i][6]*grille[i][7]*grille[i][8]*grille[i][9] != 0:
             grille.pop(i)
@@ -126,3 +129,4 @@ def is_in_a_line(grille):
             grille.append([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
             grille = grille[::-1]
     return grille
+    """
