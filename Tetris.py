@@ -28,8 +28,14 @@ while game_on:
         width, height = pygame.display.get_surface().get_size()
         pixel = update_window(width, height)
 
+        """
+        Bugs : 
+        -   Le nettoyage de la grille ne se fait pas correctement
+        => L'appel de la fonction de nettoyage n'est pris en compte par les autres fonctions 
+        """
+
         #Variable qui contient les touches pressées
-        keys = pygame.key.get_pressed()
+        keys = pygame.key.get_pressed()        
 
         #Enlever de la grille la pièce qui tombe
         for i in range(len(moving_bloc)):
@@ -39,7 +45,7 @@ while game_on:
 
         #La pièce qui tombe toutes les vitesse/1000 seconde
         if pygame.time.get_ticks() >= last_update:
-            moving_bloc, moving_bloc_position, last_moving_bloc, last_moving_bloc_position, running = check_down_collision(moving_bloc, moving_bloc_position, grille, last_moving_bloc, last_moving_bloc_position)
+            moving_bloc, moving_bloc_position, last_moving_bloc, last_moving_bloc_position, grille, running = check_down_collision(moving_bloc, moving_bloc_position, grille, last_moving_bloc, last_moving_bloc_position)
             last_update = last_update = pygame.time.get_ticks() + vitesse
         
         #Tous les événements
@@ -52,13 +58,15 @@ while game_on:
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_p:
                     debug(grille)
+                    print(moving_bloc_position)
+                    debug(moving_bloc)
             
             #Mouvement + Collisions /!\ IMPORTANT /!\
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_DOWN:
-                    moving_bloc, moving_bloc_position, last_moving_bloc, last_moving_bloc_position, running = check_down_collision(moving_bloc, moving_bloc_position, grille, last_moving_bloc, last_moving_bloc_position)
+                    moving_bloc, moving_bloc_position, last_moving_bloc, last_moving_bloc_position, grille, running = check_down_collision(moving_bloc, moving_bloc_position, grille, last_moving_bloc, last_moving_bloc_position)
                 if event.key == pygame.K_UP:
-                    moving_bloc = check_up_collision(moving_bloc, moving_bloc_position, grille)
+                    moving_bloc, moving_bloc_position = check_up_collision(moving_bloc, moving_bloc_position, grille)
                 if event.key == pygame.K_RIGHT:
                     moving_bloc_position = check_collision(moving_bloc, moving_bloc_position, grille, direction[2])
                 if event.key == pygame.K_LEFT:
@@ -66,30 +74,14 @@ while game_on:
 
         #Aller vite
         if keys[pygame.K_DOWN]:
-            moving_bloc, moving_bloc_position, last_moving_bloc, last_moving_bloc_position, running = check_down_collision(moving_bloc, moving_bloc_position, grille, last_moving_bloc, last_moving_bloc_position)
-        #if keys[pygame.K_RIGHT]:
-        #    moving_bloc_position = check_collision(moving_bloc, moving_bloc_position, grille, direction[2])
-        #if keys[pygame.K_LEFT]:
-        #    moving_bloc_position = check_collision(moving_bloc, moving_bloc_position, grille, direction[3])
-
-        #Redessiner la pièce qui vient de se faire enlever car la fonction n'était pas à jour
-        for i in range(len(last_moving_bloc)):
-            for u in range(len(last_moving_bloc[i])): 
-                if last_moving_bloc[i][u] != 0:
-                    grille[last_moving_bloc_position[0]+i][last_moving_bloc_position[1]+u] = last_moving_bloc[i][u]
-
+            moving_bloc, moving_bloc_position, last_moving_bloc, last_moving_bloc_position, grille, running = check_down_collision(moving_bloc, moving_bloc_position, grille, last_moving_bloc, last_moving_bloc_position)
+        
         #Ajouter à la grille la pièce qui tombe (On a déjà tout vérifié)
-        for i in range(len(moving_bloc)):
-            for u in range(len(moving_bloc[i])):
-                if moving_bloc[i][u] != 0:
-                    grille[moving_bloc_position[0]+i][moving_bloc_position[1]+u] = moving_bloc[i][u]
-
+        grille = add_piece(moving_bloc, moving_bloc_position, grille)
+        
         #Fonction de fermeture alternative
         if keys[pygame.K_w]:
             running = False
-
-        #Fonction de nettoyage de la grille
-        grille = is_in_a_line(grille)
 
         #Remplissage des couleurs dans la grille
         #Variable pour centrer la grille
@@ -107,8 +99,7 @@ while game_on:
         #Actualiser l'écran
         pygame.display.flip()
     
-    #Quitter le programme
-    pygame.quit()
+    break
 
 #Quitter le programme
 pygame.quit()
