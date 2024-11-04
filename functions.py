@@ -33,7 +33,7 @@ def check_down_collision(moving_bloc, moving_bloc_position, grille, last_moving_
             for u in range(len(moving_bloc[i])):
                 if moving_bloc[i][u] != 0:
                     if grille[moving_bloc_position[0]+i][moving_bloc_position[1]+u] != 0:
-                        moving_bloc, moving_bloc_position, last_moving_bloc, last_moving_bloc_position, grille, running = new_piece(grille)
+                        moving_bloc, moving_bloc_position, last_moving_bloc, last_moving_bloc_position, grille, running = new_piece(grille, moving_bloc, moving_bloc_position)
                         if not running:
                             return moving_bloc, moving_bloc_position, last_moving_bloc, last_moving_bloc_position, grille, running
                         grille = is_in_a_line(grille)
@@ -58,7 +58,8 @@ def check_down_collision(moving_bloc, moving_bloc_position, grille, last_moving_
         return moving_bloc, moving_bloc_position, last_moving_bloc, last_moving_bloc_position, grille, running
 
 #Ajouter une nouvelle pièce
-def new_piece(grille):
+def new_piece(grille, moving_bloc, moving_bloc_position):
+    running = True
     #Ici, la pièce a rencontré un obstacle, on en créé une autre et on nettoie la grille
     #Check for a potential collision at spawn
     #Création d'un potentiel bloc qui doit vérifier des conditions pour venir dans le jeu, sinon Game Over
