@@ -33,29 +33,20 @@ def check_down_collision(moving_bloc, moving_bloc_position, grille, last_moving_
             for u in range(len(moving_bloc[i])):
                 if moving_bloc[i][u] != 0:
                     if grille[moving_bloc_position[0]+i][moving_bloc_position[1]+u] != 0:
+                        #Ici il y a collision, on ajoute une nouvelle pièce
+                        moving_bloc_position[0] -= 1
                         moving_bloc, moving_bloc_position, last_moving_bloc, last_moving_bloc_position, grille, running = new_piece(grille, moving_bloc, moving_bloc_position)
                         if not running:
+                            #On arrête le programme
                             return moving_bloc, moving_bloc_position, last_moving_bloc, last_moving_bloc_position, grille, running
-                        grille = is_in_a_line(grille)
+                        grille, moving_bloc_position = is_in_a_line(grille, moving_bloc_position)
                         return moving_bloc, moving_bloc_position, last_moving_bloc, last_moving_bloc_position, grille, running #On retourne running pour arrêter la partie
         #Si pas de collision
         return moving_bloc, moving_bloc_position, last_moving_bloc, last_moving_bloc_position, grille, running
     #La pièce touche le bas de la grille
     else:
-        #Nouvelle pièce 
-        last_moving_bloc, last_moving_bloc_position = moving_bloc, moving_bloc_position
         moving_bloc_position[0] -= 1
-        moving_bloc = blocs[ri(0,6)]
-        moving_bloc_position = [0, 3]
-        #Cas du carré
-        if moving_bloc == blocs[1]:
-            moving_bloc_position = [0, 4]
-        #On ajoute la pièce
-        grille = add_piece(moving_bloc, moving_bloc_position, grille)
-        grille = add_piece(last_moving_bloc, last_moving_bloc_position, grille)
-        #Check remplissage de la grille
-        grille = is_in_a_line(grille)
-        return moving_bloc, moving_bloc_position, last_moving_bloc, last_moving_bloc_position, grille, running
+        return new_piece(grille, moving_bloc, moving_bloc_position)
 
 #Ajouter une nouvelle pièce
 def new_piece(grille, moving_bloc, moving_bloc_position):
@@ -77,10 +68,13 @@ def new_piece(grille, moving_bloc, moving_bloc_position):
                     running = False
     #On inverse les variables avant de remettre à 0 celles du bloc qui bouge 
     last_moving_bloc, last_moving_bloc_position = moving_bloc, moving_bloc_position
-    moving_bloc_position[0] -= 1
     moving_bloc = future_bloc
     moving_bloc_position = future_bloc_position
+    #On ajoute la pièce
     grille = add_piece(last_moving_bloc, last_moving_bloc_position, grille)
+    #Check remplissage de la grille
+    grille, moving_bloc_position = is_in_a_line(grille, moving_bloc_position)
+    grille = add_piece(moving_bloc, moving_bloc_position, grille)
     return moving_bloc, moving_bloc_position, last_moving_bloc, last_moving_bloc_position, grille, running
 
 #Collisions par rotation
@@ -161,14 +155,15 @@ def product(liste: list) -> int:
     return result
 
 #Fonction de nettoyage des lignes
-def is_in_a_line(grille):
+def is_in_a_line(grille, moving_bloc_position):
     for i in range(len(grille)):
         if product(grille[i]) != 0:
             grille.pop(i)
             grille = grille[::-1]
             grille.append([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
             grille = grille[::-1]
-    return grille
+            moving_bloc_position[0] += 1
+    return grille, moving_bloc_position
 
 #Ajouter la pièce à la grille
 def add_piece(moving_bloc, moving_bloc_position, grille):

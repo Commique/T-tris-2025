@@ -30,12 +30,15 @@ while game_on:
 
         """
         Bugs : 
-        -   Le nettoyage de la grille ne se fait pas correctement
-        => L'appel de la fonction de nettoyage n'est pris en compte par les autres fonctions 
+        -   Le nettoyage de la grille ne se fait pas correctement, certaines fois deux pièce apparaissent, mettant fin au jeu
+        => L'appel de la fonction de nettoyage n'est pris en compte par les autres fonctions
+        Modifier le random
+        TODO:
+        -   pass
         """
 
         #Variable qui contient les touches pressées
-        keys = pygame.key.get_pressed()        
+        keys = pygame.key.get_pressed()
 
         #Enlever de la grille la pièce qui tombe
         for i in range(len(moving_bloc)):
@@ -46,7 +49,7 @@ while game_on:
         #La pièce qui tombe toutes les vitesse/1000 seconde
         if pygame.time.get_ticks() >= last_update:
             moving_bloc, moving_bloc_position, last_moving_bloc, last_moving_bloc_position, grille, running = check_down_collision(moving_bloc, moving_bloc_position, grille, last_moving_bloc, last_moving_bloc_position)
-            last_update = last_update = pygame.time.get_ticks() + vitesse
+            last_update = pygame.time.get_ticks() + vitesse
         
         #Tous les événements
         for event in pygame.event.get():
@@ -61,7 +64,7 @@ while game_on:
                     print(moving_bloc_position)
                     debug(moving_bloc)
             
-            #Mouvement + Collisions /!\ IMPORTANT /!\
+            #Mouvement
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_DOWN:
                     moving_bloc, moving_bloc_position, last_moving_bloc, last_moving_bloc_position, grille, running = check_down_collision(moving_bloc, moving_bloc_position, grille, last_moving_bloc, last_moving_bloc_position)
