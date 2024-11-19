@@ -33,19 +33,12 @@ while game_on:
         -   Le nettoyage de la grille ne se fait pas correctement, certaines fois deux pièce apparaissent, mettant fin au jeu
         => L'appel de la fonction de nettoyage n'est pris en compte par les autres fonctions
         Modifier le random
-        TODO:
-        -   pass
+        Draw la pièce séparément
         """
 
         #Variable qui contient les touches pressées
         keys = pygame.key.get_pressed()
-
-        #Enlever de la grille la pièce qui tombe
-        for i in range(len(moving_bloc)):
-            for u in range(len(moving_bloc[i])):
-                if moving_bloc[i][u] != 0:
-                    grille[moving_bloc_position[0]+i][moving_bloc_position[1]+u] = 0
-
+        
         #La pièce qui tombe toutes les vitesse/1000 seconde
         if pygame.time.get_ticks() >= last_update:
             moving_bloc, moving_bloc_position, last_moving_bloc, last_moving_bloc_position, grille, running = check_down_collision(moving_bloc, moving_bloc_position, grille, last_moving_bloc, last_moving_bloc_position)
@@ -79,9 +72,6 @@ while game_on:
         if keys[pygame.K_DOWN]:
             moving_bloc, moving_bloc_position, last_moving_bloc, last_moving_bloc_position, grille, running = check_down_collision(moving_bloc, moving_bloc_position, grille, last_moving_bloc, last_moving_bloc_position)
         
-        #Ajouter à la grille la pièce qui tombe (On a déjà tout vérifié)
-        grille = add_piece(moving_bloc, moving_bloc_position, grille)
-        
         #Fonction de fermeture alternative
         if keys[pygame.K_w]:
             running = False
@@ -94,7 +84,12 @@ while game_on:
                 pygame.draw.rect(main_window, color[0], pygame.Rect(x*pixel + top_right_corner[0], y*pixel + top_right_corner[1], pixel, pixel), 1)
                 if grille[y][x] != 0:
                     pygame.draw.rect(main_window, color[grille[y][x]], pygame.Rect(x*pixel + top_right_corner[0]+1, y*pixel + top_right_corner[1]+1, pixel-2, pixel-2))
-        
+        #Dessiner la pièce qui bouge
+        for y in range(len(moving_bloc)):
+            for x in range(len(moving_bloc[y])):
+                if moving_bloc[y][x] != 0:
+                    pygame.draw.rect(main_window, color[moving_bloc[y][x]], pygame.Rect(x*pixel + top_right_corner[0]+1 + pixel*moving_bloc_position[1], y*pixel + top_right_corner[1]+1 + pixel*moving_bloc_position[0], pixel-2, pixel-2))
+
         #Game over
         if grille[0] != [0, 0, 0, 0, 0, 0, 0, 0, 0, 0] and moving_bloc_position[0] != 0:
             running = False

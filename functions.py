@@ -74,7 +74,6 @@ def new_piece(grille, moving_bloc, moving_bloc_position):
     grille = add_piece(last_moving_bloc, last_moving_bloc_position, grille)
     #Check remplissage de la grille
     grille, moving_bloc_position = is_in_a_line(grille, moving_bloc_position)
-    grille = add_piece(moving_bloc, moving_bloc_position, grille)
     return moving_bloc, moving_bloc_position, last_moving_bloc, last_moving_bloc_position, grille, running
 
 #Collisions par rotation
@@ -166,9 +165,9 @@ def is_in_a_line(grille, moving_bloc_position):
     return grille, moving_bloc_position
 
 #Ajouter la pièce à la grille
-def add_piece(moving_bloc, moving_bloc_position, grille):
-    for i in range(len(moving_bloc)):
-        for u in range(len(moving_bloc[i])):
-            if moving_bloc[i][u] != 0:
-                grille[moving_bloc_position[0]+i][moving_bloc_position[1]+u] = moving_bloc[i][u]
+def add_piece(last_moving_bloc, last_moving_bloc_position, grille):
+    for i in range(len(last_moving_bloc)):
+        for u in range(len(last_moving_bloc[i])):
+            if last_moving_bloc[i][u] != 0:
+                grille[last_moving_bloc_position[0]+i][last_moving_bloc_position[1]+u] = last_moving_bloc[i][u]
     return grille
