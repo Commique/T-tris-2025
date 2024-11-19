@@ -30,10 +30,7 @@ while game_on:
 
         """
         Bugs : 
-        -   Le nettoyage de la grille ne se fait pas correctement, certaines fois deux pièce apparaissent, mettant fin au jeu
-        => L'appel de la fonction de nettoyage n'est pris en compte par les autres fonctions
-        Modifier le random
-        Draw la pièce séparément
+            Modifier le random
         """
 
         #Variable qui contient les touches pressées
