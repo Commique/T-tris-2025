@@ -57,7 +57,6 @@ bloc_list_2 = bloc_list.copy()
 sh(bloc_list_1)
 sh(bloc_list_2)
 counting_list = [0, bloc_list_1, bloc_list_2]
-print(counting_list)
 moving_bloc = last_moving_bloc = blocs[counting_list[1][counting_list[0]]]
 counting_list[0] += 1
 moving_bloc_position = last_moving_bloc_position = [0, 3]   #y, x
