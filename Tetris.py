@@ -4,11 +4,6 @@ from pygame.locals import *
 from functions import *
 from variables import *
 
-
-#/!\ IMPORTANT : utiliser emumerate() à la place de range() /!\
-#=> Fonctions
-
-
 #Initialisation
 pygame.init()
 main_window = pygame.display.set_mode((10*pixel,22*pixel), RESIZABLE)
@@ -29,16 +24,20 @@ while game_on:
         pixel = update_window(width, height)
 
         """
-        Bugs : 
-            Modifier le random
+        TODO : 
+            Modifier le random => liste contenant les blocs à venir
+            Changer les variables en listes les contenant
+        
+        /!\ IMPORTANT : utiliser emumerate() à la place de range()
+        => Fonctions
         """
 
         #Variable qui contient les touches pressées
         keys = pygame.key.get_pressed()
-        
+
         #La pièce qui tombe toutes les vitesse/1000 seconde
         if pygame.time.get_ticks() >= last_update:
-            moving_bloc, moving_bloc_position, last_moving_bloc, last_moving_bloc_position, grille, running = check_down_collision(moving_bloc, moving_bloc_position, grille, last_moving_bloc, last_moving_bloc_position)
+            bloc_bundle, grille, running = check_down_collision(bloc_bundle, grille)
             last_update = pygame.time.get_ticks() + vitesse
         
         #Tous les événements
@@ -51,23 +50,23 @@ while game_on:
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_p:
                     debug(grille)
-                    print(moving_bloc_position)
-                    debug(moving_bloc)
+                    print(bloc_bundle[1])
+                    debug(bloc_bundle[0])
             
             #Mouvement
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_DOWN:
-                    moving_bloc, moving_bloc_position, last_moving_bloc, last_moving_bloc_position, grille, running = check_down_collision(moving_bloc, moving_bloc_position, grille, last_moving_bloc, last_moving_bloc_position)
+                    bloc_bundle, grille, running = check_down_collision(bloc_bundle, grille)
                 if event.key == pygame.K_UP:
-                    moving_bloc, moving_bloc_position = check_up_collision(moving_bloc, moving_bloc_position, grille)
+                    bloc_bundle[0], bloc_bundle[1] = check_up_collision(bloc_bundle, grille)
                 if event.key == pygame.K_RIGHT:
-                    moving_bloc_position = check_collision(moving_bloc, moving_bloc_position, grille, direction[2])
+                    bloc_bundle[1] = check_collision(bloc_bundle, grille, direction[2])
                 if event.key == pygame.K_LEFT:
-                    moving_bloc_position = check_collision(moving_bloc, moving_bloc_position, grille, direction[3])
+                    bloc_bundle[1] = check_collision(bloc_bundle, grille, direction[3])
 
         #Aller vite
         if keys[pygame.K_DOWN]:
-            moving_bloc, moving_bloc_position, last_moving_bloc, last_moving_bloc_position, grille, running = check_down_collision(moving_bloc, moving_bloc_position, grille, last_moving_bloc, last_moving_bloc_position)
+            bloc_bundle, grille, running = check_down_collision(bloc_bundle, grille)
         
         #Fonction de fermeture alternative
         if keys[pygame.K_w]:
@@ -82,13 +81,13 @@ while game_on:
                 if grille[y][x] != 0:
                     pygame.draw.rect(main_window, color[grille[y][x]], pygame.Rect(x*pixel + top_right_corner[0]+1, y*pixel + top_right_corner[1]+1, pixel-2, pixel-2))
         #Dessiner la pièce qui bouge
-        for y in range(len(moving_bloc)):
-            for x in range(len(moving_bloc[y])):
-                if moving_bloc[y][x] != 0:
-                    pygame.draw.rect(main_window, color[moving_bloc[y][x]], pygame.Rect(x*pixel + top_right_corner[0]+1 + pixel*moving_bloc_position[1], y*pixel + top_right_corner[1]+1 + pixel*moving_bloc_position[0], pixel-2, pixel-2))
+        for y in range(len(bloc_bundle[0])):
+            for x in range(len(bloc_bundle[0][y])):
+                if bloc_bundle[0][y][x] != 0:
+                    pygame.draw.rect(main_window, color[bloc_bundle[0][y][x]], pygame.Rect(x*pixel + top_right_corner[0]+1 + pixel*bloc_bundle[1][1], y*pixel + top_right_corner[1]+1 + pixel*bloc_bundle[1][0], pixel-2, pixel-2))
 
         #Game over
-        if grille[0] != [0, 0, 0, 0, 0, 0, 0, 0, 0, 0] and moving_bloc_position[0] != 0:
+        if grille[0] != [0, 0, 0, 0, 0, 0, 0, 0, 0, 0] and bloc_bundle[1][0] != 0:
             running = False
 
         #Actualiser l'écran

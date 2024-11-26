@@ -1,7 +1,7 @@
 from pygame import *
 from pygame.locals import *
 from variables import blocs 
-from random import randint as ri
+from random import shuffle as sh
 
 #Toutes nos fonctions
 
@@ -22,39 +22,39 @@ def debug(grille):
     print("____________________________________________________")
 
 #Fonctions ou on cherche de potentielles collisions
-def check_down_collision(moving_bloc, moving_bloc_position, grille, last_moving_bloc, last_moving_bloc_position):
+def check_down_collision(bloc_bundle, grille):
     running = True
     #On essaie de faire descendre la pièce
-    moving_bloc_position[0] += 1
+    bloc_bundle[1][0] += 1
     #Bloc ne doit pas exéder la taille de la grille
-    if moving_bloc_position[0] + len(moving_bloc) <= len(grille):
+    if bloc_bundle[1][0] + len(bloc_bundle[0]) <= len(grille):
         #Check for collisions
-        for i in range(len(moving_bloc)):
-            for u in range(len(moving_bloc[i])):
-                if moving_bloc[i][u] != 0:
-                    if grille[moving_bloc_position[0]+i][moving_bloc_position[1]+u] != 0:
+        for i in range(len(bloc_bundle[0])):
+            for u in range(len(bloc_bundle[0][i])):
+                if bloc_bundle[0][i][u] != 0:
+                    if grille[bloc_bundle[1][0]+i][bloc_bundle[1][1]+u] != 0:
                         #Ici il y a collision, on ajoute une nouvelle pièce
-                        moving_bloc_position[0] -= 1
-                        moving_bloc, moving_bloc_position, last_moving_bloc, last_moving_bloc_position, grille, running = new_piece(grille, moving_bloc, moving_bloc_position)
+                        bloc_bundle[1][0] -= 1
+                        bloc_bundle, grille, running = new_piece(bloc_bundle, grille)
                         if not running:
                             #On arrête le programme
-                            return moving_bloc, moving_bloc_position, last_moving_bloc, last_moving_bloc_position, grille, running
-                        grille, moving_bloc_position = is_in_a_line(grille, moving_bloc_position)
-                        return moving_bloc, moving_bloc_position, last_moving_bloc, last_moving_bloc_position, grille, running #On retourne running pour arrêter la partie
+                            return bloc_bundle, grille, running
+                        grille, bloc_bundle[1] = is_in_a_line(grille, bloc_bundle[1])
+                        return bloc_bundle, grille, running #On retourne running pour arrêter la partie
         #Si pas de collision
-        return moving_bloc, moving_bloc_position, last_moving_bloc, last_moving_bloc_position, grille, running
+        return bloc_bundle, grille, running
     #La pièce touche le bas de la grille
     else:
-        moving_bloc_position[0] -= 1
-        return new_piece(grille, moving_bloc, moving_bloc_position)
+        bloc_bundle[1][0] -= 1
+        return new_piece(bloc_bundle, grille)
 
 #Ajouter une nouvelle pièce
-def new_piece(grille, moving_bloc, moving_bloc_position):
+def new_piece(bloc_bundle, grille):
     running = True
     #Ici, la pièce a rencontré un obstacle, on en créé une autre et on nettoie la grille
     #Check for a potential collision at spawn
     #Création d'un potentiel bloc qui doit vérifier des conditions pour venir dans le jeu, sinon Game Over
-    future_bloc = blocs[ri(0,6)]
+    future_bloc = blocs[bloc_bundle[4][1][bloc_bundle[4][0]]]
     future_bloc_position = [0, 3]
     #Ajustement de la position pour le carré
     if future_bloc == blocs[1]:
@@ -67,23 +67,28 @@ def new_piece(grille, moving_bloc, moving_bloc_position):
                 if grille[future_bloc_position[0]+i][future_bloc_position[1]+u] != 0:
                     running = False
     #On inverse les variables avant de remettre à 0 celles du bloc qui bouge 
-    last_moving_bloc, last_moving_bloc_position = moving_bloc, moving_bloc_position
-    moving_bloc = future_bloc
-    moving_bloc_position = future_bloc_position
+    bloc_bundle[2], bloc_bundle[3] = bloc_bundle[0], bloc_bundle[1]
+    bloc_bundle[0] = future_bloc
+    bloc_bundle[1] = future_bloc_position
     #On ajoute la pièce
-    grille = add_piece(last_moving_bloc, last_moving_bloc_position, grille)
+    grille = add_piece(bloc_bundle[2], bloc_bundle[3], grille)
     #Check remplissage de la grille
-    grille, moving_bloc_position = is_in_a_line(grille, moving_bloc_position)
-    return moving_bloc, moving_bloc_position, last_moving_bloc, last_moving_bloc_position, grille, running
+    grille, bloc_bundle[1] = is_in_a_line(grille, bloc_bundle[1])
+    bloc_bundle[4][0] += 1
+    if bloc_bundle[4][0] == 7:
+        bloc_bundle[4][0] = 0
+        bloc_bundle[4][1] = bloc_bundle[4][2]
+        sh(bloc_bundle[4][2])
+    return bloc_bundle, grille, running
 
 #Collisions par rotation
-def check_up_collision(moving_bloc, moving_bloc_position, grille):
+def check_up_collision(bloc_bundle, grille):
     #On essaie une rotation
-    rotated = rotate(moving_bloc)
-    rotated_position = moving_bloc_position
-    if moving_bloc == [[7, 7, 7, 7]]:
+    rotated = rotate(bloc_bundle[0])
+    rotated_position = bloc_bundle[1]
+    if bloc_bundle[0] == [[7, 7, 7, 7]]:
         rotated_position[1] += 1
-    elif moving_bloc == [[7], [7], [7], [7]]:
+    elif bloc_bundle[0] == [[7], [7], [7], [7]]:
         rotated_position[1] -= 1
     #Bloc ne doit pas exéder la taille de la grille
     if rotated_position[1] + len(rotated[0]) <= len(grille[0]) and rotated_position[0] + len(rotated) <= len(grille):
@@ -92,49 +97,49 @@ def check_up_collision(moving_bloc, moving_bloc_position, grille):
             for u in range(len(rotated[i])):
                 if rotated[i][u] != 0:
                     if grille[rotated_position[0]+i][rotated_position[1]+u] != 0:
-                        return moving_bloc, moving_bloc_position
+                        return bloc_bundle[0], bloc_bundle[1]
         return rotated, rotated_position
     else:
         #Le bloc ne peut pas tourner, on n'applique pas la rotation
-        return moving_bloc, moving_bloc_position
+        return bloc_bundle[0], bloc_bundle[1]
 
 #Collisions latérales
-def check_collision(moving_bloc, moving_bloc_position, grille, direction):
+def check_collision(bloc_bundle, grille, direction):
     if direction == "right":
         #On essaie de le déplacer
-        moving_bloc_position[1] += 1
+        bloc_bundle[1][1] += 1
         #Bloc ne doit pas exéder la taille de la grille
-        if moving_bloc_position[1] + len(moving_bloc[0]) <= len(grille[0]):
+        if bloc_bundle[1][1] + len(bloc_bundle[0][0]) <= len(grille[0]):
             #Check for collisions
-            for i in range(len(moving_bloc)):
-                for u in range(len(moving_bloc[i])):
-                    if moving_bloc[i][u] != 0:
-                        if grille[moving_bloc_position[0]+i][moving_bloc_position[1]+u] != 0:
+            for i in range(len(bloc_bundle[0])):
+                for u in range(len(bloc_bundle[0][i])):
+                    if bloc_bundle[0][i][u] != 0:
+                        if grille[bloc_bundle[1][0]+i][bloc_bundle[1][1]+u] != 0:
                             #Ici il y a collision 
-                            moving_bloc_position[1] -= 1
-                            return moving_bloc_position
+                            bloc_bundle[1][1] -= 1
+                            return bloc_bundle[1]
             #Ici il n'y en a pas
-            return moving_bloc_position
+            return bloc_bundle[1]
         else:
             #Ici le bloc déborde, on annule le mouvement
-            moving_bloc_position[1] -= 1
-            return moving_bloc_position
+            bloc_bundle[1][1] -= 1
+            return bloc_bundle[1]
     elif direction == "left":
         #Pareil que pour droite mais à gauche
-        moving_bloc_position[1] -= 1
+        bloc_bundle[1][1] -= 1
         #Bloc ne doit pas exéder la taille de la grille
-        if moving_bloc_position[1] >= 0:
+        if bloc_bundle[1][1] >= 0:
             #Check for collisions
-            for i in range(len(moving_bloc)):
-                for u in range(len(moving_bloc[i])):
-                    if moving_bloc[i][u] != 0:
-                        if grille[moving_bloc_position[0]+i][moving_bloc_position[1]+u] != 0:
-                            moving_bloc_position[1] += 1
-                            return moving_bloc_position
-            return moving_bloc_position
+            for i in range(len(bloc_bundle[0])):
+                for u in range(len(bloc_bundle[0][i])):
+                    if bloc_bundle[0][i][u] != 0:
+                        if grille[bloc_bundle[1][0]+i][bloc_bundle[1][1]+u] != 0:
+                            bloc_bundle[1][1] += 1
+                            return bloc_bundle[1]
+            return bloc_bundle[1]
         else:
-            moving_bloc_position[1] += 1
-            return moving_bloc_position
+            bloc_bundle[1][1] += 1
+            return bloc_bundle[1]
 
 #Fonction de rotation
 def rotate(moving_bloc):

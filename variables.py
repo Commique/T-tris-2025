@@ -1,6 +1,6 @@
 from pygame import *
 from pygame.locals import *
-from random import randint as ri
+from random import shuffle as sh
 
 #Toutes nos variables
 running = True
@@ -10,7 +10,7 @@ game_on = True
 pixel = 30
 
 #Vitesse (en milisecondes)
-vitesse = 1000
+vitesse = 500
 
 #Toutes les directions possibles
 direction = [
@@ -51,10 +51,20 @@ blocs = [
      [3, 3, 0]]
 ]
 
-moving_bloc = last_moving_bloc = blocs[ri(0, 6)]
+bloc_list = [0,1,2,3,4,5,6]
+bloc_list_1 = bloc_list.copy()
+bloc_list_2 = bloc_list.copy()
+sh(bloc_list_1)
+sh(bloc_list_2)
+counting_list = [0, bloc_list_1, bloc_list_2]
+print(counting_list)
+moving_bloc = last_moving_bloc = blocs[counting_list[1][counting_list[0]]]
+counting_list[0] += 1
 moving_bloc_position = last_moving_bloc_position = [0, 3]   #y, x
 if moving_bloc == blocs[1]:
     moving_bloc_position = last_moving_bloc_position = [0, 4]    
+
+bloc_bundle = [moving_bloc, moving_bloc_position, last_moving_bloc, last_moving_bloc_position, counting_list]
 
 #Grille
 grille = [
