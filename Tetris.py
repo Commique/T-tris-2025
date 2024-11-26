@@ -24,12 +24,7 @@ while game_on:
         pixel = update_window(width, height)
 
         """
-        TODO : 
-            Modifier le random => liste contenant les blocs à venir
-            Changer les variables en listes les contenant
-        
-        /!\ IMPORTANT : utiliser emumerate() à la place de range()
-        => Fonctions
+        Section clean !
         """
 
         #Variable qui contient les touches pressées
