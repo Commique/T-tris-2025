@@ -14,7 +14,7 @@ last_update = pygame.time.get_ticks() + 2*vitesse
 
 while game_on:
     #Boucle du jeu
-    while running:
+    if running:
         #Limiter les fps à 60
         clock.tick(60)
 
@@ -88,7 +88,18 @@ while game_on:
         #Actualiser l'écran
         pygame.display.flip()
     
-    break
+    if not running:
+        game_on = False
+
+    #Afficher les trucs que l'on veut sur le côté
+    """
+    Ce que l'on veut :
+        - Le jeu au centre
+        - Le score
+        - Les prochaines pièces 
+        - Le meilleur score de la session
+        - Tétris, écrit en gros/ ou une image *non* pixelisée
+    """
 
 #Quitter le programme
 pygame.quit()
