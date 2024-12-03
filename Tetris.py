@@ -6,11 +6,16 @@ from variables import *
 
 #Initialisation
 pygame.init()
-main_window = pygame.display.set_mode((10*pixel,22*pixel), RESIZABLE)
+main_window = pygame.display.set_mode((700,700), RESIZABLE)
+"""pygame.display.toggle_fullscreen()"""
 pygame.display.set_caption("Tétris")
 pygame.display.set_icon(pygame.image.load("Tetris.jpg"))
 clock = pygame.time.Clock()
 last_update = pygame.time.get_ticks() + 2*vitesse
+police = pygame.font.Font("Brick Tetris.ttf", 2*pixel)
+game_title =  police.render("TÉTRIS", True , color[4], color[1])
+game_titleRect = game_title.get_rect()
+
 
 while game_on:
     #Boucle du jeu
@@ -22,10 +27,11 @@ while game_on:
         main_window.fill(color[1])
         width, height = pygame.display.get_surface().get_size()
         pixel = update_window(width, height)
-
+       
         """
-        Section clean !
-        """
+        BUG : fonction reset ne se declenche pas lorsque que Key_r is pressed 
+        Idee cause : fonction creation pieces run sans sarreter, programme continue a l infini 
+        et ne sort pas de la boucle        """
 
         #Variable qui contient les touches pressées
         keys = pygame.key.get_pressed()
@@ -40,7 +46,8 @@ while game_on:
             #Fonction de fermeture
             if event.type == pygame.QUIT:
                 running = False
-            
+                game_on = False
+
             #Debug
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_p:
@@ -85,11 +92,9 @@ while game_on:
         if grille[0] != [0, 0, 0, 0, 0, 0, 0, 0, 0, 0] and bloc_bundle[1][0] != 0:
             running = False
 
-        #Actualiser l'écran
-        pygame.display.flip()
-    
-    if not running:
-        game_on = False
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_r]:
+        grille, bloc_bundle, running = reset()
 
     #Afficher les trucs que l'on veut sur le côté
     """
@@ -99,7 +104,14 @@ while game_on:
         - Les prochaines pièces 
         - Le meilleur score de la session
         - Tétris, écrit en gros/ ou une image *non* pixelisée
+        - Changer couleur lettre + graphiques
+        - Niveaux ! Vitesse !
     """
+    game_titleRect.center = (width/2, height/2 - 13*pixel)
+    main_window.blit(game_title, game_titleRect)
+    
+    #Actualiser l'écran
+    pygame.display.flip()
 
 #Quitter le programme
 pygame.quit()

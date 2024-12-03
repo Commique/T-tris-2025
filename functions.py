@@ -11,7 +11,7 @@ def update_window(width, height):
         pixel = height//22
     elif height > 2.2*width:
         pixel = width//10
-    return pixel
+    return int((8/10)*pixel)
 
 
 #Debug. Print la grille pour afficher ses valeurs
@@ -176,3 +176,47 @@ def add_piece(last_moving_bloc, last_moving_bloc_position, grille):
             if last_moving_bloc[i][u] != 0:
                 grille[last_moving_bloc_position[0]+i][last_moving_bloc_position[1]+u] = last_moving_bloc[i][u]
     return grille
+
+#Fonction de reset de la grille
+def reset():
+    running = True
+    bloc_list = [0,1,2,3,4,5,6]
+    bloc_list_1 = bloc_list.copy()
+    bloc_list_2 = bloc_list.copy()
+    sh(bloc_list_1)
+    sh(bloc_list_2)
+    counting_list = [0, bloc_list_1, bloc_list_2]
+    moving_bloc = last_moving_bloc = blocs[counting_list[1][counting_list[0]]]
+    counting_list[0] += 1
+    moving_bloc_position = last_moving_bloc_position = [0, 3]   #y, x
+    if moving_bloc == blocs[1]:
+        moving_bloc_position = last_moving_bloc_position = [0, 4]    
+
+    bloc_bundle = [moving_bloc, moving_bloc_position, last_moving_bloc, last_moving_bloc_position, counting_list]
+
+    #Grille
+    grille = [
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ]
+    return grille, bloc_bundle, running
