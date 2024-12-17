@@ -30,8 +30,8 @@ while game_on:
        
         """
         BUG : fonction reset ne se declenche pas lorsque que Key_r is pressed 
-        Idee cause : fonction creation pieces run sans sarreter, programme continue a l infini 
-        et ne sort pas de la boucle        """
+        Idée de la cause : la fonction de création pièces run sans s'arrêter, le programme continue à l'infini et ne sort pas de la boucle
+        """
 
         #Variable qui contient les touches pressées
         keys = pygame.key.get_pressed()
