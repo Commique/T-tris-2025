@@ -40,7 +40,8 @@ def check_down_collision(bloc_bundle, grille):
                             #On arrête le programme
                             return bloc_bundle, grille, running
                         grille, bloc_bundle[1] = is_in_a_line(grille, bloc_bundle[1])
-                        return bloc_bundle, grille, running #On retourne running pour arrêter la partie
+                        #On retourne running pour arrêter la partie
+                        return bloc_bundle, grille, running
         #Si pas de collision
         return bloc_bundle, grille, running
     #La pièce touche le bas de la grille
@@ -82,26 +83,22 @@ def new_piece(bloc_bundle, grille):
     return bloc_bundle, grille, running
 
 #Collisions par rotation
-def check_up_collision(bloc_bundle, grille):
+def check_up_collision(moving_bloc, moving_bloc_position, grille):
     #On essaie une rotation
-    rotated = rotate(bloc_bundle[0])
-    rotated_position = bloc_bundle[1]
-    if bloc_bundle[0] == [[7, 7, 7, 7]]:
-        rotated_position[1] += 1
-    elif bloc_bundle[0] == [[7], [7], [7], [7]]:
-        rotated_position[1] -= 1
+    rotated = rotate(moving_bloc)
     #Bloc ne doit pas exéder la taille de la grille
-    if rotated_position[1] + len(rotated[0]) <= len(grille[0]) and rotated_position[0] + len(rotated) <= len(grille):
+    if moving_bloc_position[1] + len(rotated[0]) <= len(grille[0]) and moving_bloc_position[0] + len(rotated) <= len(grille):
         #Check for collisions
         for i in range(len(rotated)):
             for u in range(len(rotated[i])):
                 if rotated[i][u] != 0:
-                    if grille[rotated_position[0]+i][rotated_position[1]+u] != 0:
-                        return bloc_bundle[0], bloc_bundle[1]
-        return rotated, rotated_position
+                    if grille[moving_bloc_position[0]+i][moving_bloc_position[1]+u] != 0:
+                        #On a une collision
+                        return moving_bloc, moving_bloc_position
+        return rotated, moving_bloc_position
     else:
         #Le bloc ne peut pas tourner, on n'applique pas la rotation
-        return bloc_bundle[0], bloc_bundle[1]
+        return moving_bloc, moving_bloc_position
 
 #Collisions latérales
 def check_collision(bloc_bundle, grille, direction):

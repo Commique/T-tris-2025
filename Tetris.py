@@ -29,7 +29,9 @@ while game_on:
         pixel = update_window(width, height)
        
         """
-        BUG : fonction reset ne se declenche pas lorsque que Key_r is pressed 
+        BUG : 
+        -   Implémenter que la pièce se décale
+        -   La fonction de reset ne se declenche pas lorsque que Key_r is pressed 
         Idée de la cause : la fonction de création pièces run sans s'arrêter, le programme continue à l'infini et ne sort pas de la boucle
         """
 
@@ -60,7 +62,7 @@ while game_on:
                 if event.key == pygame.K_DOWN:
                     bloc_bundle, grille, running = check_down_collision(bloc_bundle, grille)
                 if event.key == pygame.K_UP:
-                    bloc_bundle[0], bloc_bundle[1] = check_up_collision(bloc_bundle, grille)
+                    bloc_bundle[0], bloc_bundle[1] = check_up_collision(bloc_bundle[0], bloc_bundle[1], grille)
                 if event.key == pygame.K_RIGHT:
                     bloc_bundle[1] = check_collision(bloc_bundle, grille, direction[2])
                 if event.key == pygame.K_LEFT:
