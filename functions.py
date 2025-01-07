@@ -39,8 +39,10 @@ def check_down_collision(bloc_bundle, grille):
                         if not running:
                             #On arrête le programme
                             return bloc_bundle, grille, running
-                        grille, bloc_bundle[1] = is_in_a_line(grille, bloc_bundle[1])
-                        return bloc_bundle, grille, running #On retourne running pour arrêter la partie
+                        grille, bloc_bundle[1], number_lines = is_in_a_line(grille, bloc_bundle[1], number_lines)
+                        lines_cleared=number_lines
+                        number_lines=0
+                        return bloc_bundle, grille, running, lines_cleared #On retourne running pour arrêter la partie
         #Si pas de collision
         return bloc_bundle, grille, running
     #La pièce touche le bas de la grille
@@ -159,15 +161,16 @@ def product(liste: list) -> int:
     return result
 
 #Fonction de nettoyage des lignes
-def is_in_a_line(grille, moving_bloc_position):
+def is_in_a_line(grille, moving_bloc_position, number_lines):
     for i in range(len(grille)):
         if product(grille[i]) != 0:
+            number_lines +=1
             grille.pop(i)
             grille = grille[::-1]
             grille.append([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
             grille = grille[::-1]
             moving_bloc_position[0] += 1
-    return grille, moving_bloc_position
+    return grille, moving_bloc_position, number_lines
 
 #Ajouter la pièce à la grille
 def add_piece(last_moving_bloc, last_moving_bloc_position, grille):

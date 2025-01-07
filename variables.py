@@ -10,7 +10,15 @@ game_on = True
 pixel = 30
 
 #Vitesse (en milisecondes)
-vitesse = 500
+vitesse = 300
+
+#Level game Tetris
+level_game=0
+number_lines=0
+lines_cleared=0
+total_cleared_lines=0
+#Score 
+score_total=0
 
 #Toutes les directions possibles
 direction = [
