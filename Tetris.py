@@ -15,7 +15,7 @@ last_update = pygame.time.get_ticks() + 2*vitesse
 police = pygame.font.Font("Brick Tetris.ttf", 2*pixel)
 game_title =  police.render("TÉTRIS", True , color[4], color[1])
 game_titleRect = game_title.get_rect()
-
+running = True
 
 while game_on:
     #Boucle du jeu
@@ -29,9 +29,11 @@ while game_on:
         pixel = update_window(width, height)
        
         """
-        BUG : fonction reset ne se declenche pas lorsque que Key_r is pressed 
-        Idee cause : fonction creation pieces run sans sarreter, programme continue a l infini 
-        et ne sort pas de la boucle        """
+        BUG : 
+        -   Implémenter que la pièce baton se décale
+        -   La fonction de reset ne se declenche pas lorsque que Key_r is pressed 
+        Idée de la cause : la fonction de création pièces run sans s'arrêter, le programme continue à l'infini et ne sort pas de la boucle
+        """
 
         #Variable qui contient les touches pressées
         keys = pygame.key.get_pressed()
@@ -69,6 +71,7 @@ while game_on:
         #Aller vite
         if keys[pygame.K_DOWN]:
             bloc_bundle, grille, running, lines_cleared = check_down_collision(bloc_bundle, grille)
+            bloc_bundle, grille, running = check_down_collision(bloc_bundle, grille)
         
         #Fonction de fermeture alternative
         if keys[pygame.K_w]:
@@ -125,7 +128,7 @@ while game_on:
         - Le score
         - Les prochaines pièces 
         - Le meilleur score de la session
-        - Tétris, écrit en gros/ ou une image *non* pixelisée
+        - Tétris, écrit en gros ou une image *non* pixelisée
         - Changer couleur lettre + graphiques
         - Niveaux ! Vitesse !
     """
