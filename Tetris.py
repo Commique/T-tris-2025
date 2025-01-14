@@ -29,11 +29,9 @@ while game_on:
         pixel = update_window(width, height)
        
         """
-        BUG : 
-        -   Implémenter que la pièce se décale
-        -   La fonction de reset ne se declenche pas lorsque que Key_r is pressed 
-        Idée de la cause : la fonction de création pièces run sans s'arrêter, le programme continue à l'infini et ne sort pas de la boucle
-        """
+        BUG : fonction reset ne se declenche pas lorsque que Key_r is pressed 
+        Idee cause : fonction creation pieces run sans sarreter, programme continue a l infini 
+        et ne sort pas de la boucle        """
 
         #Variable qui contient les touches pressées
         keys = pygame.key.get_pressed()
@@ -60,9 +58,9 @@ while game_on:
             #Mouvement
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_DOWN:
-                    bloc_bundle, grille, running = check_down_collision(bloc_bundle, grille)
+                    bloc_bundle, grille, running, lines_cleared = check_down_collision(bloc_bundle, grille)
                 if event.key == pygame.K_UP:
-                    bloc_bundle[0], bloc_bundle[1] = check_up_collision(bloc_bundle[0], bloc_bundle[1], grille)
+                    bloc_bundle[0], bloc_bundle[1] = check_up_collision(bloc_bundle, grille)
                 if event.key == pygame.K_RIGHT:
                     bloc_bundle[1] = check_collision(bloc_bundle, grille, direction[2])
                 if event.key == pygame.K_LEFT:
@@ -70,7 +68,7 @@ while game_on:
 
         #Aller vite
         if keys[pygame.K_DOWN]:
-            bloc_bundle, grille, running = check_down_collision(bloc_bundle, grille)
+            bloc_bundle, grille, running, lines_cleared = check_down_collision(bloc_bundle, grille)
         
         #Fonction de fermeture alternative
         if keys[pygame.K_w]:
@@ -91,12 +89,34 @@ while game_on:
                     pygame.draw.rect(main_window, color[bloc_bundle[0][y][x]], pygame.Rect(x*pixel + top_right_corner[0]+1 + pixel*bloc_bundle[1][1], y*pixel + top_right_corner[1]+1 + pixel*bloc_bundle[1][0], pixel-2, pixel-2))
 
         #Game over
+
         if grille[0] != [0, 0, 0, 0, 0, 0, 0, 0, 0, 0] and bloc_bundle[1][0] != 0:
             running = False
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_r]:
         grille, bloc_bundle, running = reset()
+    
+    #Score pour chaque ligne detruite
+    if lines_cleared == 1 :
+        score_total += 40(level_game+1)
+        total_cleared_lines += lines_cleared
+    elif lines_cleared == 2 :
+        score_total += 100(level_game+1)
+        total_cleared_lines += lines_cleared
+    elif lines_cleared == 3 : 
+        score_total += 300(level_game +1)
+        total_cleared_lines += lines_cleared
+    elif lines_cleared == 4 :
+        score_total += 1200(level_game+1)
+        total_cleared_lines += lines_cleared
+
+    #Changement level
+    if total_cleared_lines >= 10 :
+        level_game +=1
+        total_cleared_lines = 0 
+    
+
 
     #Afficher les trucs que l'on veut sur le côté
     """
