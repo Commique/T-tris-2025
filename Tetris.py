@@ -32,7 +32,19 @@ while game_on:
         BUG : 
         -   Implémenter que la pièce baton se décale
         -   La fonction de reset ne se declenche pas lorsque que Key_r is pressed 
-        Idée de la cause : la fonction de création pièces run sans s'arrêter, le programme continue à l'infini et ne sort pas de la boucle
+                Idée de la cause : la fonction de création pièces run sans s'arrêter, le programme continue à l'infini et ne sort pas de la boucle
+        
+        TODO :
+        - Le jeu au centre
+        - Le score
+        - Les prochaines pièces 
+        - Le meilleur score de la session
+        - Tétris, écrit en gros ou une image *non* pixelisée
+        - Changer couleur lettre + graphiques
+        - Niveaux ! Vitesse !
+        - Fenêtre de jeu game over
+        - Fonction Reset 
+        - Fenêtre paramètres de jeu : arrêt et replay 
         """
 
         #Variable qui contient les touches pressées
@@ -106,16 +118,6 @@ while game_on:
             vitesse += 50 
 
     #Afficher les trucs que l'on veut sur le côté
-    """
-    Ce que l'on veut :
-        - Le jeu au centre
-        - Le score
-        - Les prochaines pièces 
-        - Le meilleur score de la session
-        - Tétris, écrit en gros ou une image *non* pixelisée
-        - Changer couleur lettre + graphiques
-        - Niveaux ! Vitesse !
-    """
     game_titleRect.center = (width/2, height/2 - 13*pixel)
     main_window.blit(game_title, game_titleRect)
     
