@@ -15,7 +15,7 @@ last_update = pygame.time.get_ticks() + 2*vitesse
 police = pygame.font.Font("Brick Tetris.ttf", 2*pixel)
 game_title =  police.render("TÉTRIS", True , color[4], color[1])
 game_titleRect = game_title.get_rect()
-
+score_title =  police.render(score_bundle[2], True , color[4], color[1])
 
 while game_on:
     #Boucle du jeu
@@ -100,8 +100,9 @@ while game_on:
         #Changement level
         if score_bundle[1] >= 10 :
             score_bundle[0] +=1
-            score_bundle[1] = 0 
-
+            score_bundle[1] = 0
+            vitesse += 50 
+        print(score_bundle[2])
     #Afficher les trucs que l'on veut sur le côté
     """
     Ce que l'on veut :
