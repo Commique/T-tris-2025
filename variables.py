@@ -4,7 +4,7 @@ from random import shuffle as sh
 
 #Toutes nos variables
 game_on = True
-last_update=0
+last_update = 0
 
 #Le standard du jeu pour plus de facilité
 pixel = 30

@@ -104,7 +104,7 @@ while game_on:
             score_bundle[0] +=1
             score_bundle[1] = 0
             vitesse += 50 
-        print(score_bundle[2])
+
     #Afficher les trucs que l'on veut sur le côté
     """
     Ce que l'on veut :
