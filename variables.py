@@ -5,6 +5,7 @@ from random import shuffle as sh
 #Toutes nos variables
 running = True
 game_on = True
+last_update=0
 
 #Le standard du jeu pour plus de facilité
 pixel = 30
@@ -13,12 +14,10 @@ pixel = 30
 vitesse = 300
 
 #Level game Tetris
-level_game=0
-number_lines=0
-lines_cleared=0
-total_cleared_lines=0
-#Score 
-score_total=0
+level_game = 0
+total_cleared_lines = 0
+score_total = 0
+score_bundle = [level_game, total_cleared_lines, score_total]
 
 #Toutes les directions possibles
 direction = [
@@ -72,6 +71,7 @@ if moving_bloc == blocs[1]:
     moving_bloc_position = last_moving_bloc_position = [0, 4]    
 
 bloc_bundle = [moving_bloc, moving_bloc_position, last_moving_bloc, last_moving_bloc_position, counting_list]
+#Il n'y a pas une redondance entre moving_block et last_moving_block
 
 #Grille
 grille = [

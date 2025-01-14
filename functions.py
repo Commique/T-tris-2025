@@ -22,8 +22,9 @@ def debug(grille):
     print("____________________________________________________")
 
 #Fonctions ou on cherche de potentielles collisions
-def check_down_collision(bloc_bundle, grille):
+def check_down_collision(bloc_bundle, grille, score_bundle):
     running = True
+    lines_cleared = 0
     #On essaie de faire descendre la pièce
     bloc_bundle[1][0] += 1
     #Bloc ne doit pas exéder la taille de la grille
@@ -35,23 +36,18 @@ def check_down_collision(bloc_bundle, grille):
                     if grille[bloc_bundle[1][0]+i][bloc_bundle[1][1]+u] != 0:
                         #Ici il y a collision, on ajoute une nouvelle pièce
                         bloc_bundle[1][0] -= 1
-                        bloc_bundle, grille, running = new_piece(bloc_bundle, grille)
-                        if not running:
-                            #On arrête le programme
-                            return bloc_bundle, grille, running
-                        grille, bloc_bundle[1], number_lines = is_in_a_line(grille, bloc_bundle[1], number_lines)
-                        lines_cleared=number_lines
-                        number_lines=0
-                        return bloc_bundle, grille, running, lines_cleared #On retourne running pour arrêter la partie
+                        bloc_bundle, grille, running, score_bundle = new_piece(bloc_bundle, grille, score_bundle)
+                        #On retourne running au cas ou la partie est terminée
+                        return bloc_bundle, grille, running, score_bundle
         #Si pas de collision
-        return bloc_bundle, grille, running
+        return bloc_bundle, grille, running, score_bundle
     #La pièce touche le bas de la grille
     else:
         bloc_bundle[1][0] -= 1
-        return new_piece(bloc_bundle, grille)
+        return new_piece(bloc_bundle, grille, score_bundle)
 
 #Ajouter une nouvelle pièce
-def new_piece(bloc_bundle, grille):
+def new_piece(bloc_bundle, grille, score_bundle):
     running = True
     #Ici, la pièce a rencontré un obstacle, on en créé une autre et on nettoie la grille
     #Check for a potential collision at spawn
@@ -75,13 +71,14 @@ def new_piece(bloc_bundle, grille):
     #On ajoute la pièce
     grille = add_piece(bloc_bundle[2], bloc_bundle[3], grille)
     #Check remplissage de la grille
-    grille, bloc_bundle[1] = is_in_a_line(grille, bloc_bundle[1])
+    grille, bloc_bundle[1], lines_cleared = is_in_a_line(grille, bloc_bundle[1])
+    score_bundle = score_function(lines_cleared, score_bundle)
     bloc_bundle[4][0] += 1
     if bloc_bundle[4][0] == 7:
         bloc_bundle[4][0] = 0
         bloc_bundle[4][1] = bloc_bundle[4][2]
         sh(bloc_bundle[4][2])
-    return bloc_bundle, grille, running
+    return bloc_bundle, grille, running, score_bundle
 
 #Collisions par rotation
 def check_up_collision(bloc_bundle, grille):
@@ -161,10 +158,11 @@ def product(liste: list) -> int:
     return result
 
 #Fonction de nettoyage des lignes
-def is_in_a_line(grille, moving_bloc_position, number_lines):
+def is_in_a_line(grille, moving_bloc_position):
+    number_lines = 0
     for i in range(len(grille)):
         if product(grille[i]) != 0:
-            number_lines +=1
+            number_lines += 1
             grille.pop(i)
             grille = grille[::-1]
             grille.append([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
@@ -223,3 +221,19 @@ def reset():
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     ]
     return grille, bloc_bundle, running
+
+#Fonction de calcul de score 
+def score_function(lines_cleared, score_bundle):
+    if lines_cleared == 1 :
+        score_bundle[2] += 40*(score_bundle[0] + 1)
+        score_bundle[1] += lines_cleared
+    elif lines_cleared == 2 :
+        score_bundle[2] += 100*(score_bundle[0] + 1)
+        score_bundle[1] += lines_cleared
+    elif lines_cleared == 3 : 
+        score_bundle[2] += 300*(score_bundle[0] + 1)
+        score_bundle[1] += lines_cleared
+    elif lines_cleared == 4 :
+        score_bundle[2] += 1200*(score_bundle[0] + 1)
+        score_bundle[1] += lines_cleared
+    return score_bundle
