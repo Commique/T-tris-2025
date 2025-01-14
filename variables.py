@@ -3,7 +3,6 @@ from pygame.locals import *
 from random import shuffle as sh
 
 #Toutes nos variables
-running = True
 game_on = True
 last_update=0
 
