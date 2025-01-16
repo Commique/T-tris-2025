@@ -90,17 +90,23 @@ def check_up_collision(bloc_bundle, grille):
     elif bloc_bundle[0] == [[7], [7], [7], [7]]:
         rotated_position[1] -= 1
     #Bloc ne doit pas exéder la taille de la grille
-    if rotated_position[1] + len(rotated[0]) <= len(grille[0]) and rotated_position[0] + len(rotated) <= len(grille):
+    if rotated_position[1] >= 0 and rotated_position[1] + len(rotated[0]) <= len(grille[0]) and rotated_position[0] + len(rotated) <= len(grille):
         #Check for collisions
         for i in range(len(rotated)):
             for u in range(len(rotated[i])):
                 if rotated[i][u] != 0:
                     if grille[rotated_position[0]+i][rotated_position[1]+u] != 0:
-                        return bloc_bundle[0], bloc_bundle[1]
-        return rotated, rotated_position
+                        return bloc_bundle
+        bloc_bundle[0] = rotated
+        bloc_bundle[1] = rotated_position
+        return bloc_bundle
     else:
         #Le bloc ne peut pas tourner, on n'applique pas la rotation
-        return bloc_bundle[0], bloc_bundle[1]
+        if bloc_bundle[0] == [[7, 7, 7, 7]]:
+            rotated_position[1] -= 1
+        elif bloc_bundle[0] == [[7], [7], [7], [7]]:
+            rotated_position[1] += 1
+        return bloc_bundle
 
 #Collisions latérales
 def check_collision(bloc_bundle, grille, direction):
@@ -181,6 +187,12 @@ def add_piece(last_moving_bloc, last_moving_bloc_position, grille):
 #Fonction de reset de la grille
 def reset():
     running = True
+    
+    level_game = 0
+    total_cleared_lines = 0
+    score_total = 0
+    score_bundle = [level_game, total_cleared_lines, score_total]
+
     bloc_list = [0,1,2,3,4,5,6]
     bloc_list_1 = bloc_list.copy()
     bloc_list_2 = bloc_list.copy()
@@ -220,7 +232,7 @@ def reset():
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     ]
-    return grille, bloc_bundle, running
+    return grille, bloc_bundle, running, score_bundle
 
 #Fonction de calcul de score 
 def score_function(lines_cleared, score_bundle):
