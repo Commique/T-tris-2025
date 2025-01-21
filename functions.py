@@ -1,10 +1,9 @@
 from pygame import *
 from pygame.locals import *
-from variables import blocs 
-from random import shuffle as sh
+from variables import blocs, color
+from random import shuffle as sh, randint as  ri
 
 #Toutes nos fonctions
-
 #Ajuster la taille des composants
 def update_window(width, height):
     if height <= 2.2*width:
@@ -185,13 +184,16 @@ def add_piece(last_moving_bloc, last_moving_bloc_position, grille):
     return grille
 
 #Fonction de reset de la grille
-def reset():
+def reset(last_score_bundle):
     running = True
     
     level_game = 0
     total_cleared_lines = 0
     score_total = 0
-    score_bundle = [level_game, total_cleared_lines, score_total]
+    high_score = 0
+    score_color = (0,0,0)
+    high_score_color = last_score_bundle[5]
+    score_bundle = [level_game, total_cleared_lines, score_total, high_score, score_color, high_score_color]
 
     bloc_list = [0,1,2,3,4,5,6]
     bloc_list_1 = bloc_list.copy()
@@ -248,4 +250,6 @@ def score_function(lines_cleared, score_bundle):
     elif lines_cleared == 4 :
         score_bundle[2] += 1200*(score_bundle[0] + 1)
         score_bundle[1] += lines_cleared
+    if lines_cleared != 0:
+        score_bundle[4] = color[ri(2,9)]
     return score_bundle

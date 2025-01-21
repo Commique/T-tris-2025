@@ -6,10 +6,10 @@ from variables import *
 
 #Initialisation
 pygame.init()
-main_window = pygame.display.set_mode((500, 500), RESIZABLE)
+main_window = pygame.display.set_mode((800, 500), RESIZABLE)
 main_window = pygame.display.set_mode()
 screen_resolution = list(main_window.get_size())
-main_window = pygame.display.set_mode((500, 500), RESIZABLE)
+main_window = pygame.display.set_mode((800, 500), RESIZABLE)
 pygame.display.set_caption("Tétris")
 pygame.display.set_icon(pygame.image.load("Tetris.jpg"))
 clock = pygame.time.Clock()
@@ -100,7 +100,12 @@ while game_on:
         if score_bundle[1] >= 10 :
             score_bundle[0] +=1
             score_bundle[1] = 0
-            vitesse -= vitesse*10/100 
+            vitesse -= vitesse*10/100
+        
+        #High_score
+        if score_bundle[2] > score_bundle[3]:
+            score_bundle[3] = score_bundle[2]
+            score_bundle[5] = score_bundle[4]
     
     if not running:
         #Tous les évènements 
@@ -149,27 +154,37 @@ while game_on:
     for y in range(len(blocs[bloc_bundle[4][1][bloc_bundle[4][0]]])):
         for x in range(len(blocs[bloc_bundle[4][1][bloc_bundle[4][0]]][y])):
             if blocs[bloc_bundle[4][1][bloc_bundle[4][0]]][y][x] != 0:
-                pygame.draw.rect(main_window, color[0], pygame.Rect((x+7)*pixel + width/2, (y-7)*pixel + height/2, pixel, pixel), 2)
-                pygame.draw.rect(main_window, color[blocs[bloc_bundle[4][1][bloc_bundle[4][0]]][y][x]], pygame.Rect((x+7)*pixel + width/2 + 1, (y-7)*pixel + height/2 + 1, pixel-2, pixel-2))
-                pygame.draw.rect(main_window, brighter_color[blocs[bloc_bundle[4][1][bloc_bundle[4][0]]][y][x]], pygame.Rect((x+7)*pixel + width/2 + int(1/4*pixel), (y-7)*pixel + height/2 + int(1/4*pixel), int(1/4*pixel), int(1/4*pixel)))
+                pygame.draw.rect(main_window, color[0], pygame.Rect((x+7)*pixel + width/2, (y-9)*pixel + height/2, pixel, pixel), 2)
+                pygame.draw.rect(main_window, color[blocs[bloc_bundle[4][1][bloc_bundle[4][0]]][y][x]], pygame.Rect((x+7)*pixel + width/2 + 1, (y-9)*pixel + height/2 + 1, pixel-2, pixel-2))
+                pygame.draw.rect(main_window, brighter_color[blocs[bloc_bundle[4][1][bloc_bundle[4][0]]][y][x]], pygame.Rect((x+7)*pixel + width/2 + int(1/4*pixel), (y-9)*pixel + height/2 + int(1/4*pixel), int(1/4*pixel), int(1/4*pixel)))
 
 
     #Fonction de reset de la grille
     if keys[pygame.K_r]:
-        grille, bloc_bundle, running, score_bundle = reset()
+        grille, bloc_bundle, running, score_bundle = reset(score_bundle)
 
     #Afficher le titre au dessus
-    police = pygame.font.Font("Brick Tetris.ttf", 2*pixel)
+    police = pygame.font.Font("Brick Tetris.otf", 2*pixel)
     game_title =  police.render("TÉTRIS", True, color[8], color[1])
     game_titleRect = game_title.get_rect()
     game_titleRect.center = (width/2, height/2 - 13*pixel)
     main_window.blit(game_title, game_titleRect)
 
     #Afficher le score
-    score_display =  police.render(str(score_bundle[2]), True, color[score_bundle[2]%9], color[1])
+    score_display =  police.render(str(score_bundle[2]), True, score_bundle[4])
     score_displayRect = score_display.get_rect()
     score_displayRect.topleft = (width/2 + 7*pixel, height/2 - 11*pixel)
+    main_window.blit(police.render("Score : ", True, color[0]), score_displayRect)
+    score_displayRect.topleft = (width/2 + 7*pixel + police.render("Score : ", True, color[0]).get_rect().width, height/2 - 11*pixel)
     main_window.blit(score_display, score_displayRect)
+
+    #Afficher le high_score
+    high_score_display =  police.render(str(score_bundle[3]), True, score_bundle[5])
+    high_score_displayRect = high_score_display.get_rect()
+    high_score_displayRect.topleft = (width/2 + 7*pixel, height/2 - 6*pixel)
+    main_window.blit(police.render("Highscore : ", True, color[0]), high_score_displayRect)
+    high_score_displayRect.topleft = (width/2 + 7*pixel + police.render("Highscore : ", True, color[0]).get_rect().width, height/2 - 6*pixel)
+    main_window.blit(high_score_display, high_score_displayRect)
 
     #Actualiser l'écran
     pygame.display.flip()

@@ -18,7 +18,9 @@ level_game = 0
 total_cleared_lines = 0
 score_total = 0
 high_score = 0
-score_bundle = [level_game, total_cleared_lines, score_total, high_score]
+score_color = (0,0,0)
+high_score_color = score_color
+score_bundle = [level_game, total_cleared_lines, score_total, high_score, score_color, high_score_color]
 
 #Toutes les directions possibles
 direction = [
