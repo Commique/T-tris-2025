@@ -9,7 +9,6 @@ pygame.init()
 main_window = pygame.display.set_mode((500, 500), RESIZABLE)
 main_window = pygame.display.set_mode()
 screen_resolution = list(main_window.get_size())
-good_screen_resolution = [1366, 745]
 main_window = pygame.display.set_mode((500, 500), RESIZABLE)
 pygame.display.set_caption("Tétris")
 pygame.display.set_icon(pygame.image.load("Tetris.jpg"))
@@ -23,16 +22,14 @@ BUG :
 -   La fonction de reset ne se declenche pas lorsque que Key_r is pressed
 
 TODO :
-- Le jeu au centre
-- Le score
-- Les prochaines pièces 
 - Le meilleur score de la session
-- Tétris, écrit en gros ou une image *non* pixelisée
 - Changer couleur lettre + graphiques
 - Niveaux ! Vitesse !
 - Fenêtre de jeu game over
-- Fonction Reset 
 - Fenêtre paramètres de jeu : arrêt et replay 
+- Bordure à droite avec bouton paramètres 
+- Paramètres à gauche avec paramètres de vitesse
+- Bordure grille de jeu
 """
 
 while game_on:
@@ -133,21 +130,21 @@ while game_on:
     #Tout le temps actif
     #Remplissage des couleurs dans la grille
     #Variable pour centrer la grille
-    top_right_corner = [width/2 - 5*pixel, height/2 - 11*pixel]
+    top_left_corner = [width/2 - 5*pixel, height/2 - 11*pixel]
     if list(main_window.get_size())[0] == good_screen_resolution[0] and list(main_window.get_size())[1] == good_screen_resolution[1]:
-        pygame.draw.rect(main_window, color[0], pygame.Rect(top_right_corner[0] - int(1/2*pixel), top_right_corner[1] - int(1/2*pixel), 11*pixel, 23*pixel), int(1/2*pixel))
+        pygame.draw.rect(main_window, color[0], pygame.Rect(top_left_corner[0] - int(1/2*pixel), top_left_corner[1] - int(1/2*pixel), 11*pixel, 23*pixel), int(1/2*pixel))
     for y in range(len(grille)):
         for x in range(len(grille[y])):
-            pygame.draw.rect(main_window, color[0], pygame.Rect(x*pixel + top_right_corner[0], y*pixel + top_right_corner[1], pixel, pixel), 1)
+            pygame.draw.rect(main_window, color[0], pygame.Rect(x*pixel + top_left_corner[0], y*pixel + top_left_corner[1], pixel, pixel), 1)
             if grille[y][x] != 0:
-                pygame.draw.rect(main_window, color[grille[y][x]], pygame.Rect(x*pixel + top_right_corner[0]+1, y*pixel + top_right_corner[1]+1, pixel-2, pixel-2))
-                pygame.draw.rect(main_window, brighter_color[grille[y][x]], pygame.Rect(x*pixel + top_right_corner[0] + int(1/4*pixel), y*pixel + top_right_corner[1] + int(1/4*pixel), int(1/4*pixel), int(1/4*pixel)))
+                pygame.draw.rect(main_window, color[grille[y][x]], pygame.Rect(x*pixel + top_left_corner[0]+1, y*pixel + top_left_corner[1]+1, pixel-2, pixel-2))
+                pygame.draw.rect(main_window, brighter_color[grille[y][x]], pygame.Rect(x*pixel + top_left_corner[0] + int(1/4*pixel), y*pixel + top_left_corner[1] + int(1/4*pixel), int(1/4*pixel), int(1/4*pixel)))
     #Dessiner la pièce qui bouge
     for y in range(len(bloc_bundle[0])):
         for x in range(len(bloc_bundle[0][y])):
             if bloc_bundle[0][y][x] != 0:
-                pygame.draw.rect(main_window, color[bloc_bundle[0][y][x]], pygame.Rect(x*pixel + top_right_corner[0]+1 + pixel*bloc_bundle[1][1], y*pixel + top_right_corner[1]+1 + pixel*bloc_bundle[1][0], pixel-2, pixel-2))
-                pygame.draw.rect(main_window, brighter_color[bloc_bundle[0][y][x]], pygame.Rect(x*pixel + top_right_corner[0] + int(1/4*pixel) + pixel*bloc_bundle[1][1], y*pixel + top_right_corner[1] + int(1/4*pixel) + pixel*bloc_bundle[1][0], int(1/4*pixel), int(1/4*pixel)))
+                pygame.draw.rect(main_window, color[bloc_bundle[0][y][x]], pygame.Rect(x*pixel + top_left_corner[0]+1 + pixel*bloc_bundle[1][1], y*pixel + top_left_corner[1]+1 + pixel*bloc_bundle[1][0], pixel-2, pixel-2))
+                pygame.draw.rect(main_window, brighter_color[bloc_bundle[0][y][x]], pygame.Rect(x*pixel + top_left_corner[0] + int(1/4*pixel) + pixel*bloc_bundle[1][1], y*pixel + top_left_corner[1] + int(1/4*pixel) + pixel*bloc_bundle[1][0], int(1/4*pixel), int(1/4*pixel)))
     #Dessiner la pièce qui va venir
     for y in range(len(blocs[bloc_bundle[4][1][bloc_bundle[4][0]]])):
         for x in range(len(blocs[bloc_bundle[4][1][bloc_bundle[4][0]]][y])):

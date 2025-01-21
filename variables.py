@@ -5,6 +5,7 @@ from random import shuffle as sh
 #Toutes nos variables
 game_on = True
 last_update = 0
+good_screen_resolution = [1366, 745]
 
 #Le standard du jeu pour plus de facilité
 pixel = 30
@@ -16,7 +17,8 @@ vitesse = 300
 level_game = 0
 total_cleared_lines = 0
 score_total = 0
-score_bundle = [level_game, total_cleared_lines, score_total]
+high_score = 0
+score_bundle = [level_game, total_cleared_lines, score_total, high_score]
 
 #Toutes les directions possibles
 direction = [
