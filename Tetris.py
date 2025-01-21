@@ -164,7 +164,7 @@ while game_on:
         grille, bloc_bundle, running, score_bundle = reset(score_bundle)
 
     #Afficher le titre au dessus
-    police = pygame.font.Font("Brick Tetris.otf", 2*pixel)
+    police = pygame.font.Font("MarkaziText-Bold.ttf", 2*pixel)
     game_title =  police.render("TÉTRIS", True, color[8], color[1])
     game_titleRect = game_title.get_rect()
     game_titleRect.center = (width/2, height/2 - 13*pixel)
