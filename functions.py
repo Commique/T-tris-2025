@@ -253,6 +253,3 @@ def score_function(lines_cleared, score_bundle):
     if lines_cleared != 0:
         score_bundle[4] = color[ri(2,9)]
     return score_bundle
-
-def secondary_window() :
-    second_window = pygame.Surface((800,500), RESIZABLE)

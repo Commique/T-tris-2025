@@ -9,7 +9,7 @@ pygame.init()
 main_window = pygame.display.set_mode((800, 500), RESIZABLE)
 main_window = pygame.display.set_mode()
 screen_resolution = list(main_window.get_size())
-"""  main_window = pygame.display.set_mode((800, 500), RESIZABLE)"""
+main_window = pygame.display.set_mode((800, 500), RESIZABLE)
 pygame.display.set_caption("Tétris")
 pygame.display.set_icon(pygame.image.load("Tetris.jpg"))
 clock = pygame.time.Clock()
