@@ -9,7 +9,7 @@ pygame.init()
 main_window = pygame.display.set_mode((800, 500), RESIZABLE)
 main_window = pygame.display.set_mode()
 screen_resolution = list(main_window.get_size())
-main_window = pygame.display.set_mode((800, 500), RESIZABLE)
+"""  main_window = pygame.display.set_mode((800, 500), RESIZABLE)"""
 pygame.display.set_caption("Tétris")
 pygame.display.set_icon(pygame.image.load("Tetris.jpg"))
 clock = pygame.time.Clock()
@@ -18,13 +18,8 @@ running = True
 
 """
 BUG : 
--   Implémenter que la pièce baton se décale
--   La fonction de reset ne se declenche pas lorsque que Key_r is pressed
 
 TODO :
-- Le meilleur score de la session
-- Changer couleur lettre + graphiques
-- Niveaux ! Vitesse !
 - Fenêtre de jeu game over
 - Fenêtre paramètres de jeu : arrêt et replay 
 - Bordure à droite avec bouton paramètres 

@@ -190,7 +190,7 @@ def reset(last_score_bundle):
     level_game = 0
     total_cleared_lines = 0
     score_total = 0
-    high_score = 0
+    high_score = last_score_bundle[3]
     score_color = (0,0,0)
     high_score_color = last_score_bundle[5]
     score_bundle = [level_game, total_cleared_lines, score_total, high_score, score_color, high_score_color]
@@ -206,7 +206,7 @@ def reset(last_score_bundle):
     moving_bloc_position = last_moving_bloc_position = [0, 3]   #y, x
     if moving_bloc == blocs[1]:
         moving_bloc_position = last_moving_bloc_position = [0, 4]    
-
+    #Reset Bloc Bundle
     bloc_bundle = [moving_bloc, moving_bloc_position, last_moving_bloc, last_moving_bloc_position, counting_list]
 
     #Grille
@@ -253,3 +253,6 @@ def score_function(lines_cleared, score_bundle):
     if lines_cleared != 0:
         score_bundle[4] = color[ri(2,9)]
     return score_bundle
+
+def secondary_window() :
+    second_window = pygame.Surface((800,500), RESIZABLE)
