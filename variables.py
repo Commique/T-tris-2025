@@ -6,6 +6,8 @@ from random import shuffle as sh
 game_on = True
 last_update = 0
 good_screen_resolution = [1366, 745]
+show_parameters = True
+current_theme = 1
 
 #Le standard du jeu pour plus de facilité
 pixel = 30
@@ -31,41 +33,59 @@ direction = [
 ]
 
 #Toutes les couleurs possibles
-color = [
-    (0, 0, 0),          #0
-    (255, 255, 255),    #1
-    (255, 0, 0),        #2
-    (0, 255, 0),        #3
-    (0, 0, 255),        #4
-    (255, 255, 0),      #5
-    (255, 0, 255),      #6
-    (0, 255, 255),      #7
-    (255, 165, 0),      #8
-    (170, 0, 255)       #9
+colors = [
+    [(0, 0, 0),         # Black
+    (255, 255, 255)],   # White
+    # Thème 1
+    [(255, 0, 0),       # Red
+    (0, 255, 0),        # Green
+    (0, 0, 255),        # Blue
+    (255, 255, 0),      # Yellow
+    (0, 255, 255),      # Cyan
+    (255, 165, 0),      # Orange
+    (255, 0, 255)],     # Magenta
+    # Thème 2
+    [(128, 0, 128),     # Purple
+    (255, 192, 203),    # Pink
+    (128, 128, 0),      # Olive
+    (0, 128, 128),      # Teal
+    (60, 179, 113),     # Medium Sea Green
+    (123, 104, 238),    # Medium Slate Blue
+    (255, 99, 71)],     # Tomato
+    # Thème 3
+    [(75, 0, 130),      # Indigo
+    (240, 230, 140),    # Khaki
+    (173, 216, 230),    # Light Blue
+    (144, 238, 144),    # Light Green
+    (255, 182, 193),    # Light Pink
+    (255, 160, 122),    # Light Salmon
+    (218, 112, 214)],   # Orchid
+    # Thème 4
+    [(255, 215, 0),     # Gold
+    (0, 191, 255),      # Deep Sky Blue
+    (255, 69, 0),       # Orange Red
+    (70, 130, 180),     # Steel Blue
+    (32, 178, 170),     # Light Sea Green
+    (147, 112, 219),    # Medium Purple
+    (170, 0, 255)]      # Purple
 ]
 
-brighter_color = [
-    (50, 50, 50),        #0
-    (255, 255, 255),     #1
-    (255, 50, 50),       #2
-    (50, 255, 50),       #3
-    (50, 50, 255),       #4
-    (255, 255, 50),      #5
-    (255, 50, 255),      #6
-    (50, 255, 255),      #7
-    (255, 215, 50),      #8
-    (220, 50, 255)       #9
-]
+#Fonction pour éclaircir une couleur
+def lighten_color(color, factor=0.5):
+    return tuple(min(255, int(c + (255 - c) * factor)) for c in color)
+
+#Créer la liste des couleurs plus claires
+brighter_colors = [[lighten_color(color) for color in theme] for theme in colors]
 
 #Tous les blocs possibles
 blocs = [
-    [[7, 7, 7, 7]],     #I
+    [[6, 6, 6, 6]],     #I
     [[5, 5],            #O
      [5, 5]],
-    [[9, 9, 9],         #T
-     [0, 9, 0]],
-    [[8, 8, 8],         #L
-     [8, 0, 0]],
+    [[8, 8, 8],         #T
+     [0, 8, 0]],
+    [[7, 7, 7],         #L
+     [7, 0, 0]],
     [[4, 4, 4],         #J
      [0, 0, 4]],
     [[2, 2, 0],         #Z

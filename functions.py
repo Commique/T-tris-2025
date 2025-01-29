@@ -1,6 +1,6 @@
 from pygame import *
 from pygame.locals import *
-from variables import blocs, color
+from variables import blocs, colors
 from random import shuffle as sh, randint as  ri
 
 #Toutes nos fonctions
@@ -84,9 +84,9 @@ def check_up_collision(bloc_bundle, grille):
     #On essaie une rotation
     rotated = rotate(bloc_bundle[0])
     rotated_position = bloc_bundle[1]
-    if bloc_bundle[0] == [[7, 7, 7, 7]]:
+    if bloc_bundle[0] == [[6, 6, 6, 6]]:
         rotated_position[1] += 1
-    elif bloc_bundle[0] == [[7], [7], [7], [7]]:
+    elif bloc_bundle[0] == [[6], [6], [6], [6]]:
         rotated_position[1] -= 1
     #Bloc ne doit pas exéder la taille de la grille
     if rotated_position[1] >= 0 and rotated_position[1] + len(rotated[0]) <= len(grille[0]) and rotated_position[0] + len(rotated) <= len(grille):
@@ -101,9 +101,9 @@ def check_up_collision(bloc_bundle, grille):
         return bloc_bundle
     else:
         #Le bloc ne peut pas tourner, on n'applique pas la rotation
-        if bloc_bundle[0] == [[7, 7, 7, 7]]:
+        if bloc_bundle[0] == [[6, 6, 6, 6]]:
             rotated_position[1] -= 1
-        elif bloc_bundle[0] == [[7], [7], [7], [7]]:
+        elif bloc_bundle[0] == [[6], [6], [6], [6]]:
             rotated_position[1] += 1
         return bloc_bundle
 
@@ -251,5 +251,5 @@ def score_function(lines_cleared, score_bundle):
         score_bundle[2] += 1200*(score_bundle[0] + 1)
         score_bundle[1] += lines_cleared
     if lines_cleared != 0:
-        score_bundle[4] = color[ri(2,9)]
+        score_bundle[4] = colors[0][0]
     return score_bundle
