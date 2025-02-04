@@ -17,8 +17,12 @@ last_update = pygame.time.get_ticks() + 2*vitesse
 police = pygame.font.Font("MarkaziText-Bold.ttf", 2*pixel)
 running = True
 buttons = []
+pygame.mixer.init()
+pygame.mixer.music.load()
+pygame.mixer.music.play()
 
-#Les boutons
+
+#Defintion propriétés des boutons
 class Button():
     def __init__(self, x, y, width, height, default_color, hovered_color, pressed_color, text_color, button_text, onclickFunction=None):
         #Définir la police pour les boutons
@@ -119,7 +123,7 @@ while game_on:
     parametres.buttonRect = pygame.Rect(parametres.x, parametres.y, parametres.width, parametres.height)
     parametres.buttonSurface = pygame.Surface((parametres.width, parametres.height))
     police = pygame.font.Font("MarkaziText-Bold.ttf", pixel)
-    parametres.buttonSurf = police.render("Paramètres", True, colors[0][0])
+    parametres.buttonSurf = police.render("Paramètres", True, colors[0][1])
     police = pygame.font.Font("MarkaziText-Bold.ttf", 2*pixel)
 
     #S'occuper des boutons

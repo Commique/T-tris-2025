@@ -77,6 +77,10 @@ def lighten_color(color, factor=0.5):
 #Créer la liste des couleurs plus claires
 brighter_colors = [[lighten_color(color) for color in theme] for theme in colors]
 
+#Playlist de musique
+playlist=["music_tetris1.mp3"]
+
+
 #Tous les blocs possibles
 blocs = [
     [[6, 6, 6, 6]],     #I
