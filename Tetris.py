@@ -97,7 +97,7 @@ TODO :
 """
 
 #Les boutons
-parametres = Button(0, 0, 0, 0, colors[0][0], brighter_colors[0][0], colors[0][0], colors[0][0], "Paramètres", parameter_display)
+parametres = Button(0, 0, 0, 0, colors[0][6], brighter_colors[0][4], colors[0][3], colors[0][3], "Paramètres", parameter_display)
 
 #Boucle principale
 while game_on:
@@ -123,7 +123,7 @@ while game_on:
     parametres.buttonRect = pygame.Rect(parametres.x, parametres.y, parametres.width, parametres.height)
     parametres.buttonSurface = pygame.Surface((parametres.width, parametres.height))
     police = pygame.font.Font("MarkaziText-Bold.ttf", pixel)
-    parametres.buttonSurf = police.render("Paramètres", True, colors[0][1])
+    parametres.buttonSurf = police.render("Paramètres", True, colors[0][6])
     police = pygame.font.Font("MarkaziText-Bold.ttf", 2*pixel)
 
     #S'occuper des boutons
@@ -250,7 +250,7 @@ while game_on:
                 pygame.draw.rect(main_window, brighter_colors[current_theme][blocs[bloc_bundle[4][1][bloc_bundle[4][0]]][y][x]-2], pygame.Rect((x+7)*pixel + width/2 + int(1/4*pixel), (y-8)*pixel + height/2 + int(1/4*pixel), int(1/4*pixel), int(1/4*pixel)))
 
     #Afficher le titre au dessus
-    game_title =  police.render("TÉTRIS", True, colors[0][0], colors[0][1])
+    game_title =  police.render("TÉTRIS", True, colors[0][6])
     game_titleRect = game_title.get_rect()
     game_titleRect.center = (width/2, height/2 - 13*pixel)
     main_window.blit(game_title, game_titleRect)
@@ -273,11 +273,10 @@ while game_on:
 
     if show_parameters:
         #Dessiner les paramètres
-        pygame.draw.rect(main_window, colors[0][0], pygame.Rect(top_left_corner[0] - 13*pixel - int(1/2*pixel), top_left_corner[1] - int(1/2*pixel), 11*pixel, 23*pixel))
+        pygame.draw.rect(main_window, darker_colors[0][3], pygame.Rect(top_left_corner[0] - 13*pixel - int(1/2*pixel), top_left_corner[1] - int(1/2*pixel), 11*pixel, 23*pixel))
     
     #Actualiser l'écran
     pygame.display.flip()
-    main_window.fill((0, 0, 0))
 
 #Quitter le programme
 pygame.quit()

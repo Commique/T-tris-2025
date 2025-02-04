@@ -35,7 +35,12 @@ direction = [
 #Toutes les couleurs possibles
 colors = [
     [(0, 0, 0),         # Black
-    (255, 255, 255)],   # White
+    (255, 255, 255),    # White
+    (199, 172, 146),    # Khaki
+    (148, 168, 154),    # Campbrige Blue
+    (156, 179, 128),    # Olivine
+    (212, 224, 155),    # Vanilla
+    (164, 74, 63)],     # Chestnut
     # Thème 1
     [(255, 0, 0),       # Red
     (0, 255, 0),        # Green
@@ -46,7 +51,7 @@ colors = [
     (255, 0, 255)],     # Magenta
     # Thème 2
     [(128, 0, 128),     # Purple
-    (255, 192, 203),    # Pink
+    (255, 105, 180),    # Hot Pink
     (128, 128, 0),      # Olive
     (0, 128, 128),      # Teal
     (60, 179, 113),     # Medium Sea Green
@@ -55,10 +60,10 @@ colors = [
     # Thème 3
     [(75, 0, 130),      # Indigo
     (240, 230, 140),    # Khaki
-    (173, 216, 230),    # Light Blue
-    (144, 238, 144),    # Light Green
-    (255, 182, 193),    # Light Pink
-    (255, 160, 122),    # Light Salmon
+    (0, 0, 139),        # Dark Blue
+    (0, 100, 0),        # Dark Green
+    (255, 20, 147),     # Deep Pink
+    (233, 150, 122),    # Dark Salmon
     (218, 112, 214)],   # Orchid
     # Thème 4
     [(255, 215, 0),     # Gold
@@ -76,6 +81,13 @@ def lighten_color(color, factor=0.5):
 
 #Créer la liste des couleurs plus claires
 brighter_colors = [[lighten_color(color) for color in theme] for theme in colors]
+
+#Fonction pour assombrir une couleur
+def darken_color(color, factor=0.5):
+    return tuple(max(0, int(c * (1 - factor))) for c in color)
+
+#Créer la liste des couleurs plus sombres
+darker_colors = [[darken_color(color) for color in theme] for theme in colors]
 
 #Playlist de musique
 playlist=["music_tetris1.mp3"]
