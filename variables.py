@@ -6,7 +6,7 @@ from random import shuffle as sh
 game_on = True
 last_update = 0
 good_screen_resolution = [1366, 745]
-show_parameters = True
+show_parameters = False
 current_theme = 1
 
 #Le standard du jeu pour plus de facilité
@@ -59,7 +59,7 @@ colors = [
     (255, 99, 71)],     # Tomato
     # Thème 3
     [(75, 0, 130),      # Indigo
-    (240, 230, 140),    # Khaki
+    (120, 115, 70),     # Khaki
     (0, 0, 139),        # Dark Blue
     (0, 100, 0),        # Dark Green
     (255, 20, 147),     # Deep Pink
@@ -72,7 +72,15 @@ colors = [
     (70, 130, 180),     # Steel Blue
     (32, 178, 170),     # Light Sea Green
     (147, 112, 219),    # Medium Purple
-    (170, 0, 255)]      # Purple
+    (170, 0, 255)],     # Purple
+    # Thème 5
+    [(139, 0, 0),       # Dark Red
+    (0, 100, 0),        # Dark Green
+    (0, 0, 139),        # Dark Blue
+    (184, 134, 11),     # Dark Goldenrod
+    (0, 139, 139),      # Dark Cyan
+    (255, 140, 0),      # Dark Orange
+    (139, 0, 139)]      # Dark Magenta
 ]
 
 #Fonction pour éclaircir une couleur
@@ -90,7 +98,11 @@ def darken_color(color, factor=0.5):
 darker_colors = [[darken_color(color) for color in theme] for theme in colors]
 
 #Playlist de musique
-playlist=["music_tetris1.mp3"]
+playlist = ["Musics/music_menu.mp3",
+            "Musics/music_1.mp3",
+            "Musics/music_2.mp3",
+            "Musics/music_3.mp3",
+            "Musics/music_5.mp3"]
 
 
 #Tous les blocs possibles

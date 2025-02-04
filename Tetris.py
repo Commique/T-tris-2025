@@ -18,9 +18,8 @@ police = pygame.font.Font("MarkaziText-Bold.ttf", 2*pixel)
 running = True
 buttons = []
 pygame.mixer.init()
-pygame.mixer.music.load()
+pygame.mixer.music.load(playlist[current_theme-1])
 pygame.mixer.music.play()
-
 
 #Defintion propriétés des boutons
 class Button():
@@ -187,12 +186,16 @@ while game_on:
             score_bundle[0] += 1
             score_bundle[1] = 0
             vitesse -= vitesse*10/100
-            current_theme = current_theme + 1 if current_theme < 4 else 1
+            current_theme = current_theme + 1 if current_theme < 5 else 1
+            pygame.mixer.music.load(playlist[current_theme-1])
+            pygame.mixer.music.play(fade_ms=1000)
         
         #High_score
         if score_bundle[2] > score_bundle[3]:
             score_bundle[3] = score_bundle[2]
             score_bundle[5] = score_bundle[4]
+        
+        pygame.mixer.music.unpause()
     
     if not running:
         #Tous les évènements 
@@ -221,7 +224,9 @@ while game_on:
         
         #Fonction de reset de la grille
         if keys[pygame.K_r]:
-            grille, bloc_bundle, running, score_bundle = reset(score_bundle)
+            grille, bloc_bundle, running, score_bundle, vitesse = reset(score_bundle)
+        
+        pygame.mixer.music.pause()
     
     #Tout le temps actif
     #Remplissage des couleurs dans la grille
