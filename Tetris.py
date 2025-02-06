@@ -182,12 +182,12 @@ while game_on:
             running = False
 
         #Changement level
-        if score_bundle[1] >= 1:
+        if score_bundle[1] >= 5:
             score_bundle[0] += 1
             score_bundle[1] = 0
             vitesse -= vitesse*10/100
             current_theme = current_theme + 1 if current_theme < 5 else 1
-            pygame.mixer.music.load(playlist[current_theme-1])
+            pygame.mixer.music.load(playlist[current_theme])
             pygame.mixer.music.play(fade_ms=1000)
         
         #High_score

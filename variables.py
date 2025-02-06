@@ -102,6 +102,7 @@ playlist = ["Musics/music_menu.mp3",
             "Musics/music_1.mp3",
             "Musics/music_2.mp3",
             "Musics/music_3.mp3",
+            "Musics/music_4.mp3",
             "Musics/music_5.mp3"]
 
 
