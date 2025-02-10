@@ -7,7 +7,7 @@ game_on = True
 last_update = 0
 good_screen_resolution = [1366, 745]
 show_parameters = False
-current_theme = 1
+current_theme = 0
 
 #Le standard du jeu pour plus de facilité
 pixel = 30

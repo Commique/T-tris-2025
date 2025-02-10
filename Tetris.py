@@ -18,7 +18,7 @@ police = pygame.font.Font("MarkaziText-Bold.ttf", 2*pixel)
 running = True
 buttons = []
 pygame.mixer.init()
-pygame.mixer.music.load(playlist[current_theme-1])
+pygame.mixer.music.load(playlist[current_theme])
 pygame.mixer.music.play()
 
 #Defintion propriétés des boutons
@@ -182,7 +182,7 @@ while game_on:
             running = False
 
         #Changement level
-        if score_bundle[1] >= 5:
+        if score_bundle[1] >= 1:
             score_bundle[0] += 1
             score_bundle[1] = 0
             vitesse -= vitesse*10/100
