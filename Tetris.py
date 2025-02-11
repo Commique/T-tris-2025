@@ -18,7 +18,7 @@ police = pygame.font.Font("MarkaziText-Bold.ttf", 2*pixel)
 running = True
 buttons = []
 pygame.mixer.init()
-pygame.mixer.music.load(playlist[current_theme-1])
+pygame.mixer.music.load(playlist[current_theme])
 pygame.mixer.music.play()
 
 #Defintion propriétés des boutons
@@ -183,12 +183,12 @@ while game_on:
             running = False
 
         #Changement level
-        if score_bundle[1] >= 1:
+        if score_bundle[1] >= 2:
             score_bundle[0] += 1
             score_bundle[1] = 0
             vitesse -= vitesse*10/100
             current_theme = current_theme + 1 if current_theme < 5 else 1
-            pygame.mixer.music.load(playlist[current_theme-1])
+            pygame.mixer.music.load(playlist[current_theme])
             pygame.mixer.music.play(fade_ms=1000)
         
         #High_score
@@ -255,7 +255,7 @@ while game_on:
                 pygame.draw.rect(main_window, colors[current_theme][blocs[bloc_bundle[4][1][bloc_bundle[4][0]]][y][x]-2], pygame.Rect((x+7)*pixel + width/2 + 1, (y-8)*pixel + height/2 + 1, pixel-2, pixel-2))
                 pygame.draw.rect(main_window, brighter_colors[current_theme][blocs[bloc_bundle[4][1][bloc_bundle[4][0]]][y][x]-2], pygame.Rect((x+7)*pixel + width/2 + int(1/4*pixel), (y-8)*pixel + height/2 + int(1/4*pixel), int(1/4*pixel), int(1/4*pixel)))
 
-    #Afficher le titre au dessus
+    #Afficher le titre au dessus    
     game_title =  police.render("TÉTRIS", True, colors[0][6])
     game_titleRect = game_title.get_rect()
     game_titleRect.center = (width/2, height/2 - 13*pixel)

@@ -7,7 +7,7 @@ game_on = True
 last_update = 0
 good_screen_resolution = [1366, 745]
 show_parameters = False
-current_theme = 1
+current_theme = 0
 
 #Le standard du jeu pour plus de facilité
 pixel = 30
@@ -102,6 +102,7 @@ playlist = ["Musics/music_menu.mp3",
             "Musics/music_1.mp3",
             "Musics/music_2.mp3",
             "Musics/music_3.mp3",
+            "Musics/music_4.mp3",
             "Musics/music_5.mp3"]
 
 
