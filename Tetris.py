@@ -23,7 +23,7 @@ pygame.mixer.music.play()
 
 #Defintion propriétés des boutons
 class Button():
-    def __init__(self, x, y, width, height, default_color, hovered_color, pressed_color, text_color, button_text, onclickFunction=None):
+    def __init__(self, x, y, width, height, default_color, hovered_color, pressed_color, text_color, button_text, onclickFunction=None, rendering=True):
         #Définir la police pour les boutons
         police = pygame.font.Font("MarkaziText-Bold.ttf", pixel)
 
@@ -34,12 +34,14 @@ class Button():
         self.height = height
         self.onclickFunction = onclickFunction
         self.alreadyPressed = False
+        self.rendering = rendering
+        self.text_color = text_color
 
         #Définir les propriétés du bouton
         self.buttonSurface = pygame.Surface((self.width, self.height))
         self.buttonRect = pygame.Rect(self.x, self.y, self.width, self.height)
         self.buttonRect.topleft = (self.x, self.y)
-        self.buttonSurf = police.render(button_text, True, text_color)
+        self.buttonSurf = police.render(button_text, True, self.text_color)
 
         #Ajouter le bouton à la liste des boutons
         buttons.append(self)
@@ -53,30 +55,28 @@ class Button():
 
     #Fonctionnement des boutons 
     def process_button(self):
-        mousePos = pygame.mouse.get_pos()
-        #Etat par défaut
-        self.buttonSurface.fill(self.fillColors['normal'])
-        if self.buttonRect.collidepoint(mousePos):
-            #La souris est sur le bouton
-            self.buttonSurface.fill(self.fillColors['hover'])
-            if pygame.mouse.get_pressed(num_buttons=3)[0]:
-                #Le bouton est pressé
-                if not self.alreadyPressed:
-                    self.buttonSurface.fill(self.fillColors['pressed'])
-                    self.onclickFunction()
-                    self.alreadyPressed = True
-            else:
-                #Le bouton n'est pas pressé
-                self.alreadyPressed = False
-        
-        #Centrer le texte et le faire afficher
-        self.buttonSurface.blit(self.buttonSurf, [self.buttonRect.width/2 - self.buttonSurf.get_rect().width/2,
-                                                self.buttonRect.height/2 - self.buttonSurf.get_rect().height/2])
-        #Afficher le bouton
-        main_window.blit(self.buttonSurface, self.buttonRect)
-    
-    #Remettre la police par défaut
-    police = pygame.font.Font("MarkaziText-Bold.ttf", 2*pixel)
+        if self.rendering:
+            mousePos = pygame.mouse.get_pos()
+            #Etat par défaut
+            self.buttonSurface.fill(self.fillColors['normal'])
+            if self.buttonRect.collidepoint(mousePos):
+                #La souris est sur le bouton
+                self.buttonSurface.fill(self.fillColors['hover'])
+                if pygame.mouse.get_pressed(num_buttons=3)[0]:
+                    #Le bouton est pressé
+                    if not self.alreadyPressed:
+                        self.buttonSurface.fill(self.fillColors['pressed'])
+                        self.onclickFunction()
+                        self.alreadyPressed = True
+                else:
+                    #Le bouton n'est pas pressé
+                    self.alreadyPressed = False
+            
+            #Centrer le texte et le faire afficher
+            self.buttonSurface.blit(self.buttonSurf, [self.buttonRect.width/2 - self.buttonSurf.get_rect().width/2,
+                                                    self.buttonRect.height/2 - self.buttonSurf.get_rect().height/2])
+            #Afficher le bouton
+            main_window.blit(self.buttonSurface, self.buttonRect)
 
 #Fonction pour afficher ou non les paramètres
 def parameter_display():
@@ -96,7 +96,8 @@ TODO :
 """
 
 #Les boutons
-parametres = Button(0, 0, 0, 0, colors[0][6], brighter_colors[0][4], colors[0][3], colors[0][3], "Paramètres", parameter_display)
+parametres = Button(0, 0, 0, 0, colors[0][6], brighter_colors[0][4], colors[0][3], colors[0][0], "Paramètres", parameter_display, True)
+start_button = Button(0, 0, 0, 0, colors[0][6], brighter_colors[0][4], colors[0][3], colors[0][3], "Start", parameter_display, True)
 
 #Boucle principale
 while game_on:
