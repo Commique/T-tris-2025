@@ -7,7 +7,9 @@ game_on = True
 last_update = 0
 good_screen_resolution = [1366, 745]
 show_parameters = False
-current_theme = 0
+current_theme = 1
+is_on_start = True
+is_not_game_over = True
 
 #Le standard du jeu pour plus de facilité
 pixel = 30
@@ -34,53 +36,53 @@ direction = [
 
 #Toutes les couleurs possibles
 colors = [
-    [(0, 0, 0),         # Black
-    (255, 255, 255),    # White
-    (199, 172, 146),    # Khaki
-    (148, 168, 154),    # Campbrige Blue
-    (156, 179, 128),    # Olivine
-    (212, 224, 155),    # Vanilla
-    (164, 74, 63)],     # Chestnut
-    # Thème 1
-    [(255, 0, 0),       # Red
-    (0, 255, 0),        # Green
-    (0, 0, 255),        # Blue
-    (255, 255, 0),      # Yellow
-    (0, 255, 255),      # Cyan
-    (255, 165, 0),      # Orange
-    (255, 0, 255)],     # Magenta
-    # Thème 2
-    [(128, 0, 128),     # Purple
-    (255, 105, 180),    # Hot Pink
-    (128, 128, 0),      # Olive
-    (0, 128, 128),      # Teal
-    (60, 179, 113),     # Medium Sea Green
-    (123, 104, 238),    # Medium Slate Blue
-    (255, 99, 71)],     # Tomato
-    # Thème 3
-    [(75, 0, 130),      # Indigo
-    (120, 115, 70),     # Khaki
-    (0, 0, 139),        # Dark Blue
-    (0, 100, 0),        # Dark Green
-    (255, 20, 147),     # Deep Pink
-    (233, 150, 122),    # Dark Salmon
-    (218, 112, 214)],   # Orchid
-    # Thème 4
-    [(255, 215, 0),     # Gold
-    (0, 191, 255),      # Deep Sky Blue
-    (255, 69, 0),       # Orange Red
-    (70, 130, 180),     # Steel Blue
-    (32, 178, 170),     # Light Sea Green
-    (147, 112, 219),    # Medium Purple
-    (170, 0, 255)],     # Purple
-    # Thème 5
-    [(139, 0, 0),       # Dark Red
-    (0, 100, 0),        # Dark Green
-    (0, 0, 139),        # Dark Blue
-    (184, 134, 11),     # Dark Goldenrod
-    (0, 139, 139),      # Dark Cyan
-    (255, 140, 0),      # Dark Orange
-    (139, 0, 139)]      # Dark Magenta
+    [(0, 0, 0),         #Black
+    (255, 255, 255),    #White
+    (199, 172, 146),    #Khaki
+    (148, 168, 154),    #Campbrige Blue
+    (156, 179, 128),    #Olivine
+    (212, 224, 155),    #Vanilla
+    (164, 74, 63)],     #Chestnut
+    #Thème 1
+    [(255, 0, 0),       #Red
+    (0, 255, 0),        #Green
+    (0, 0, 255),        #Blue
+    (255, 255, 0),      #Yellow
+    (0, 255, 255),      #Cyan
+    (255, 165, 0),      #Orange
+    (255, 0, 255)],     #Magenta
+    #Thème 2
+    [(128, 0, 128),     #Purple
+    (255, 105, 180),    #Hot Pink
+    (128, 128, 0),      #Olive
+    (0, 128, 128),      #Teal
+    (60, 179, 113),     #Medium Sea Green
+    (123, 104, 238),    #Medium Slate Blue
+    (255, 99, 71)],     #Tomato
+    #Thème 3
+    [(75, 0, 130),      #Indigo
+    (120, 115, 70),     #Khaki
+    (0, 0, 139),        #Dark Blue
+    (0, 100, 0),        #Dark Green
+    (255, 20, 147),     #Deep Pink
+    (233, 150, 122),    #Dark Salmon
+    (218, 112, 214)],   #Orchid
+    #Thème 4
+    [(255, 215, 0),     #Gold
+    (0, 191, 255),      #Deep Sky Blue
+    (255, 69, 0),       #Orange Red
+    (70, 130, 180),     #Steel Blue
+    (32, 178, 170),     #Light Sea Green
+    (147, 112, 219),    #Medium Purple
+    (170, 0, 255)],     #Purple
+    #Thème 5
+    [(139, 0, 0),       #Dark Red
+    (0, 100, 0),        #Dark Green
+    (0, 0, 139),        #Dark Blue
+    (184, 134, 11),     #Dark Goldenrod
+    (0, 139, 139),      #Dark Cyan
+    (255, 140, 0),      #Dark Orange
+    (139, 0, 139)]      #Dark Magenta
 ]
 
 #Fonction pour éclaircir une couleur
@@ -98,13 +100,13 @@ def darken_color(color, factor=0.5):
 darker_colors = [[darken_color(color) for color in theme] for theme in colors]
 
 #Playlist de musique
-playlist = ["Musics/music_menu.mp3",
-            "Musics/music_1.mp3",
+playlist = ["Musics/music_1.mp3",
             "Musics/music_2.mp3",
             "Musics/music_3.mp3",
             "Musics/music_4.mp3",
             "Musics/music_5.mp3"]
 
+musique_ambiance = ["Musics/music_menu.mp3"]
 
 #Tous les blocs possibles
 blocs = [

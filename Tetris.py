@@ -18,7 +18,7 @@ police = pygame.font.Font("MarkaziText-Bold.ttf", 2*pixel)
 running = True
 buttons = []
 pygame.mixer.init()
-pygame.mixer.music.load(playlist[current_theme])
+pygame.mixer.music.load(musique_ambiance[0])
 pygame.mixer.music.play()
 
 #Defintion propriétés des boutons
@@ -36,12 +36,13 @@ class Button():
         self.alreadyPressed = False
         self.rendering = rendering
         self.text_color = text_color
+        self.button_text = button_text
 
         #Définir les propriétés du bouton
         self.buttonSurface = pygame.Surface((self.width, self.height))
         self.buttonRect = pygame.Rect(self.x, self.y, self.width, self.height)
         self.buttonRect.topleft = (self.x, self.y)
-        self.buttonSurf = police.render(button_text, True, self.text_color)
+        self.buttonSurf = police.render(self.button_text, True, self.text_color)
 
         #Ajouter le bouton à la liste des boutons
         buttons.append(self)
@@ -72,6 +73,10 @@ class Button():
                     #Le bouton n'est pas pressé
                     self.alreadyPressed = False
             
+            #Redéfinir la couleur du texte
+            police = pygame.font.Font("MarkaziText-Bold.ttf", pixel)
+            self.buttonSurf = police.render(self.button_text, True, self.text_color)
+            
             #Centrer le texte et le faire afficher
             self.buttonSurface.blit(self.buttonSurf, [self.buttonRect.width/2 - self.buttonSurf.get_rect().width/2,
                                                     self.buttonRect.height/2 - self.buttonSurf.get_rect().height/2])
@@ -81,23 +86,80 @@ class Button():
 #Fonction pour afficher ou non les paramètres
 def parameter_display():
     global show_parameters
-    show_parameters = not show_parameters   
+    show_parameters = not show_parameters
+
+def start_function():
+    global is_on_start
+    is_on_start = False
 
 """
 BUG : 
--  Un bouton en trop
 
 TODO :
 - Fenêtre de jeu game over
-- Fenêtre paramètres de jeu : arrêt et replay 
-- Bordure à droite avec bouton paramètres 
+- Fenêtre paramètres de jeu : arrêt et reset
 - Paramètres à gauche avec paramètres de vitesse
 - Bordure grille de jeu
 """
 
 #Les boutons
-parametres = Button(0, 0, 0, 0, colors[0][6], brighter_colors[0][4], colors[0][3], colors[0][0], "Paramètres", parameter_display, True)
-start_button = Button(0, 0, 0, 0, colors[0][6], brighter_colors[0][4], colors[0][3], colors[0][3], "Start", parameter_display, True)
+parametres = Button(0, 0, 0, 0, colors[0][4], brighter_colors[0][4], colors[0][3], colors[0][6], "Paramètres", parameter_display, False)
+start_button = Button(0, 0, 0, 0, colors[0][4], brighter_colors[0][4], colors[0][3], colors[0][6], "Start", start_function, True)
+restart_button = Button(0, 0, 0, 0, colors[0][4], brighter_colors[0][4], colors[0][3], colors[0][6], "Restart", reset, False)
+quit_button = Button(0, 0, 0, 0, colors[0][4], brighter_colors[0][4], colors[0][3], colors[0][6], "Quit", quit, False)
+
+#Fenêtre de lancement
+while is_on_start:
+    #Variable qui contient les touches pressées
+    keys = pygame.key.get_pressed()
+
+    #Limiter les fps à 60
+    clock.tick(60)
+
+    #Tous les événements
+    for event in pygame.event.get():
+        #Fonction de fermeture
+        if event.type == pygame.QUIT:
+            is_on_start = False
+            game_on = False
+
+    #Tout ce qui a un rapport avec l'affichage
+    main_window.fill(colors[0][1])
+    width, height = pygame.display.get_surface().get_size()
+    pixel = update_window(width, height)
+
+    #Redéfinir les caractéristiques des boutons
+    start_button.x = width / 2 - 3 * pixel
+    start_button.y = height / 2 + 6 * pixel
+    start_button.width = 6 * pixel
+    start_button.height = 3 * pixel
+    start_button.buttonRect = pygame.Rect(start_button.x, start_button.y, start_button.width, start_button.height)
+    start_button.buttonSurface = pygame.Surface((start_button.width, start_button.height))
+    police = pygame.font.Font("MarkaziText-Bold.ttf", pixel)
+    start_button.buttonSurf = police.render("Start", True, colors[0][6])
+
+    #S'occuper des boutons
+    for object in buttons:
+        object.process_button()
+    
+    #Redéfinir la police
+    police = pygame.font.Font("MarkaziText-Bold.ttf", 10*pixel)
+
+    #Afficher le titre au dessus    
+    game_title = police.render("TÉTRIS", True, colors[0][6])
+    game_titleRect = game_title.get_rect()
+    game_titleRect.center = (width/2, height/2)
+    main_window.blit(game_title, game_titleRect)
+
+    #Actualiser l'écran
+    pygame.display.flip()
+
+#Boutton start
+start_button.rendering = False
+
+#La musique
+pygame.mixer.music.load(playlist[current_theme - 1])
+pygame.mixer.music.play()
 
 #Boucle principale
 while game_on:
@@ -125,13 +187,16 @@ while game_on:
     police = pygame.font.Font("MarkaziText-Bold.ttf", pixel)
     parametres.buttonSurf = police.render("Paramètres", True, colors[0][6])
     police = pygame.font.Font("MarkaziText-Bold.ttf", 2*pixel)
+    parametres.rendering = True
 
     #S'occuper des boutons
     for object in buttons:
         object.process_button()
 
     #Boucle du jeu
-    if running:     
+    if running:
+        is_not_game_over = True
+
         #La pièce qui tombe toutes les vitesse/1000 seconde
         if pygame.time.get_ticks() >= last_update:
             bloc_bundle, grille, running, score_bundle = check_down_collision(bloc_bundle, grille, score_bundle)
@@ -181,6 +246,7 @@ while game_on:
         #Game over
         if grille[0] != [0, 0, 0, 0, 0, 0, 0, 0, 0, 0] and bloc_bundle[1][0] != 0:
             running = False
+            is_not_game_over = False
 
         #Changement level
         if score_bundle[1] >= 2:
@@ -188,16 +254,15 @@ while game_on:
             score_bundle[1] = 0
             vitesse -= vitesse*10/100
             current_theme = current_theme + 1 if current_theme < 5 else 1
-            pygame.mixer.music.load(playlist[current_theme])
+            pygame.mixer.music.load(playlist[current_theme - 1])
             pygame.mixer.music.play(fade_ms=1000)
         
         #High_score
         if score_bundle[2] > score_bundle[3]:
             score_bundle[3] = score_bundle[2]
             score_bundle[5] = score_bundle[4]
-        
-        pygame.mixer.music.unpause()
     
+    #Pause
     if not running:
         #Tous les évènements 
         for event in pygame.event.get():
@@ -227,8 +292,64 @@ while game_on:
         if keys[pygame.K_r]:
             grille, bloc_bundle, running, score_bundle, vitesse = reset(score_bundle)
         
-        pygame.mixer.music.pause()
-    
+        #Écran de game over
+        if is_not_game_over:
+            #Mettre les boutons restart et quit
+            #Restart
+            restart_button.x = width / 2 - 3 * pixel
+            restart_button.y = height / 2 + 6 * pixel
+            restart_button.width = 6 * pixel
+            restart_button.height = 3 * pixel
+            restart_button.buttonRect = pygame.Rect(restart_button.x, restart_button.y, restart_button.width, restart_button.height)
+            restart_button.buttonSurface = pygame.Surface((restart_button.width, restart_button.height))
+            police = pygame.font.Font("MarkaziText-Bold.ttf", pixel)
+            restart_button.buttonSurf = police.render("Restart", True, colors[0][6])
+            restart_button.rendering = True
+
+            #Quit
+            quit_button.x = width / 2 + 7 * pixel
+            quit_button.y = height / 2 + 6 * pixel
+            quit_button.width = 6 * pixel
+            quit_button.height = 3 * pixel
+            quit_button.buttonRect = pygame.Rect(quit_button.x, quit_button.y, quit_button.width, quit_button.height)
+            quit_button.buttonSurface = pygame.Surface((quit_button.width, quit_button.height))
+            police = pygame.font.Font("MarkaziText-Bold.ttf", pixel)
+            quit_button.buttonSurf = police.render("Quit", True, colors[0][6])
+            quit_button.rendering = True
+
+            #Redéfinir la police
+            police = pygame.font.Font("MarkaziText-Bold.ttf", 5*pixel)
+
+            #Afficher le titre au dessus    
+            game_title = police.render("GAME OVER", True, colors[0][6])
+            game_titleRect = game_title.get_rect()
+            game_titleRect.center = (width/2, height/2)
+            main_window.blit(game_title, game_titleRect)
+
+            #Afficher le score
+            score_display =  police.render(str(score_bundle[2]), True, score_bundle[4])
+            score_displayRect = score_display.get_rect()
+            score_displayRect.topleft = (width/2 + 7*pixel, height/2 - 11*pixel)
+            main_window.blit(police.render("Score : ", True, colors[0][0]), score_displayRect)
+            score_displayRect.topleft = (width/2 + 7*pixel + police.render("Score : ", True, colors[0][0]).get_rect().width, height/2 - 11*pixel)
+            main_window.blit(score_display, score_displayRect)
+
+            #Afficher le high_score
+            high_score_display =  police.render(str(score_bundle[3]), True, score_bundle[5])
+            high_score_displayRect = high_score_display.get_rect()
+            high_score_displayRect.topleft = (width/2 + 7*pixel, height/2 - 5*pixel)
+            main_window.blit(police.render("Highscore : ", True, colors[0][0]), high_score_displayRect)
+            high_score_displayRect.topleft = (width/2 + 7*pixel + police.render("Highscore : ", True, colors[0][0]).get_rect().width, height/2 - 5*pixel)
+            main_window.blit(high_score_display, high_score_displayRect)
+
+            #S'occuper des boutons
+            for object in buttons:
+                object.process_button()
+        
+        if not is_not_game_over:
+            restart_button.rendering = False
+            quit_button.rendering = False
+
     #Tout le temps actif
     #Remplissage des couleurs dans la grille
     #Variable pour centrer la grille
