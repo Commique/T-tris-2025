@@ -22,8 +22,7 @@ def debug(grille):
 
 #Fonctions ou on cherche de potentielles collisions
 def check_down_collision(bloc_bundle, grille, score_bundle):
-    running = True
-    lines_cleared = 0
+    is_game_over = False
     #On essaie de faire descendre la pièce
     bloc_bundle[1][0] += 1
     #Bloc ne doit pas exéder la taille de la grille
@@ -35,11 +34,11 @@ def check_down_collision(bloc_bundle, grille, score_bundle):
                     if grille[bloc_bundle[1][0]+i][bloc_bundle[1][1]+u] != 0:
                         #Ici il y a collision, on ajoute une nouvelle pièce
                         bloc_bundle[1][0] -= 1
-                        bloc_bundle, grille, running, score_bundle = new_piece(bloc_bundle, grille, score_bundle)
-                        #On retourne running au cas ou la partie est terminée
-                        return bloc_bundle, grille, running, score_bundle
+                        bloc_bundle, grille, is_game_over, score_bundle = new_piece(bloc_bundle, grille, score_bundle)
+                        #On retourne is_game_over au cas ou la partie est terminée
+                        return bloc_bundle, grille, is_game_over, score_bundle
         #Si pas de collision
-        return bloc_bundle, grille, running, score_bundle
+        return bloc_bundle, grille, is_game_over, score_bundle
     #La pièce touche le bas de la grille
     else:
         bloc_bundle[1][0] -= 1
@@ -47,7 +46,7 @@ def check_down_collision(bloc_bundle, grille, score_bundle):
 
 #Ajouter une nouvelle pièce
 def new_piece(bloc_bundle, grille, score_bundle):
-    running = True
+    is_game_over = False
     #Ici, la pièce a rencontré un obstacle, on en créé une autre et on nettoie la grille
     #Check for a potential collision at spawn
     #Création d'un potentiel bloc qui doit vérifier des conditions pour venir dans le jeu, sinon Game Over
@@ -62,7 +61,7 @@ def new_piece(bloc_bundle, grille, score_bundle):
             if future_bloc[i][u] != 0:
                 #Check for Game Over 
                 if grille[future_bloc_position[0]+i][future_bloc_position[1]+u] != 0:
-                    running = False
+                    is_game_over = True
     #On inverse les variables avant de remettre à 0 celles du bloc qui bouge 
     bloc_bundle[2], bloc_bundle[3] = bloc_bundle[0], bloc_bundle[1]
     bloc_bundle[0] = future_bloc
@@ -77,7 +76,7 @@ def new_piece(bloc_bundle, grille, score_bundle):
         bloc_bundle[4][0] = 0
         bloc_bundle[4][1] = bloc_bundle[4][2]
         sh(bloc_bundle[4][2])
-    return bloc_bundle, grille, running, score_bundle
+    return bloc_bundle, grille, is_game_over, score_bundle
 
 #Collisions par rotation
 def check_up_collision(bloc_bundle, grille):
@@ -186,7 +185,7 @@ def add_piece(last_moving_bloc, last_moving_bloc_position, grille):
 #Fonction de reset de la grille
 def reset(last_score_bundle):
     running = True
-    
+
     level_game = 0
     total_cleared_lines = 0
     score_total = 0

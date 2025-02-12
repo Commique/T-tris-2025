@@ -3,13 +3,15 @@ from pygame.locals import *
 from random import shuffle as sh
 
 #Toutes nos variables
+running = True
 game_on = True
+is_on_start = True
+is_game_over = False
 last_update = 0
 good_screen_resolution = [1366, 745]
 show_parameters = False
 current_theme = 1
-is_on_start = True
-is_not_game_over = True
+
 
 #Le standard du jeu pour plus de facilité
 pixel = 30
@@ -38,6 +40,11 @@ direction = [
 colors = [
     [(0, 0, 0),         #Black
     (255, 255, 255),    #White
+    (142, 202, 230),    #Light Blue
+    (33, 150, 243),     #Blue
+    (255, 183, 3),      #Yellow
+    (251, 133, 0),      #Orange
+    (2, 48, 71),        #Dark Blue
     (199, 172, 146),    #Khaki
     (148, 168, 154),    #Campbrige Blue
     (156, 179, 128),    #Olivine
