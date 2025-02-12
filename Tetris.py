@@ -105,9 +105,7 @@ def quit_function():
 BUG : 
 
 TODO :
-- Fenêtre de jeu game over
-- Fenêtre paramètres de jeu : arrêt et reset
-- Paramètres à gauche avec paramètres de vitesse
+- Paramètres à gauche avec paramètres de vitesse et reset
 - Bordure grille de jeu
 """
 
@@ -398,7 +396,7 @@ while game_on:
             #Dessiner les paramètres
             pygame.draw.rect(main_window, darker_colors[0][3], pygame.Rect(top_left_corner[0] - 13*pixel - int(1/2*pixel), top_left_corner[1] - int(1/2*pixel), 11*pixel, 23*pixel))
         
-        #Redéfinir les caractéristiques des boutons
+        #Redéfinir les caractéristiques du bouton parametres
         parametres.x = width / 2 + 8 * pixel
         parametres.y = height / 2 + 6 * pixel
         parametres.width = 6 * pixel
