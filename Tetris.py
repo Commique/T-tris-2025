@@ -103,9 +103,14 @@ def quit_function():
 
 """
 BUG : 
+- redemarrage de la musique à chaque fois qu'elle s'arrete
+- reset de la musique quand bouton restart
+- synchro theme et musique
 
 TODO :
-- Paramètres dans le rectangle à gauche avec paramètres de vitesse et reset + tout le blablabla
+- Paramètres dans le rectangle à gauche avec paramètres de vitesse, bouton reset, bouton restart, mode de jeu,
+ bouton mute, mode de fonctionnement, mode de jeu, mode de difficulté
+- musique qui s'arret quand pause
 """
 
 #Les boutons
