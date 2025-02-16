@@ -95,7 +95,7 @@ def restart_function():
     global is_game_over
     is_game_over = False
     global grille, bloc_bundle, running, score_bundle, vitesse
-    grille, bloc_bundle, running, score_bundle, vitesse = reset(score_bundle)
+    grille, bloc_bundle, running, score_bundle, vitesse, current_theme = reset(score_bundle)
 
 def quit_function():
     global game_on
@@ -105,8 +105,7 @@ def quit_function():
 BUG : 
 
 TODO :
-- Paramètres à gauche avec paramètres de vitesse et reset
-- Bordure grille de jeu
+- Paramètres dans le rectangle à gauche avec paramètres de vitesse et reset + tout le blablabla
 """
 
 #Les boutons
@@ -131,7 +130,7 @@ while is_on_start:
             game_on = False
 
     #Démarage rapide du jeu
-    if keys[pygame.K_SPACE]:
+    if keys[pygame.K_SPACE] or keys[pygame.K_RETURN]:
         is_on_start = False
 
     #Tout ce qui a un rapport avec l'affichage
@@ -177,7 +176,7 @@ pygame.mixer.music.play()
 
 #Boucle principale
 while game_on:
-    #Variable qui contient les touches pressées
+    #Variable qui contient les touches pressées 
     keys = pygame.key.get_pressed()
 
     #Limiter les fps à 60
@@ -225,27 +224,60 @@ while game_on:
                         pygame.display.toggle_fullscreen()
 
                 #Mouvement
-                if event.key == pygame.K_DOWN:
-                    bloc_bundle, grille, is_game_over, score_bundle = check_down_collision(bloc_bundle, grille, score_bundle)
                 if event.key == pygame.K_UP:
+                    start_up_held_down = pygame.time.get_ticks()
+                    time_up_held_down = pygame.time.get_ticks()
                     bloc_bundle = check_up_collision(bloc_bundle, grille)
                 if event.key == pygame.K_RIGHT:
+                    start_right_held_down = pygame.time.get_ticks()
+                    time_right_held_down = pygame.time.get_ticks()
                     bloc_bundle[1] = check_collision(bloc_bundle, grille, direction[2])
                 if event.key == pygame.K_LEFT:
+                    start_left_held_down = pygame.time.get_ticks()
+                    time_left_held_down = pygame.time.get_ticks()
                     bloc_bundle[1] = check_collision(bloc_bundle, grille, direction[3])
+                if event.key == pygame.K_RETURN:
+                    count = bloc_bundle[4][0]
+                    while bloc_bundle[4][0] == count:
+                        bloc_bundle, grille, is_game_over, score_bundle = check_down_collision(bloc_bundle, grille, score_bundle)
 
         #Aller vite
+        current_time = pygame.time.get_ticks()
         if keys[pygame.K_DOWN]:
             bloc_bundle, grille, is_game_over, score_bundle = check_down_collision(bloc_bundle, grille, score_bundle)
+        if keys[pygame.K_UP]:
+            if current_time - time_up_held_down > 200:
+                bloc_bundle = check_up_collision(bloc_bundle, grille)
+                time_up_held_down = current_time
+            if current_time - start_up_held_down > 400:
+                bloc_bundle = check_up_collision(bloc_bundle, grille)
+        else:
+            start_up_held_down = current_time
+        if keys[pygame.K_RIGHT]:
+            if current_time - time_right_held_down > 200:
+                bloc_bundle[1] = check_collision(bloc_bundle, grille, direction[2])
+                time_right_held_down = current_time
+            if current_time - start_right_held_down > 400:
+                bloc_bundle[1] = check_collision(bloc_bundle, grille, direction[2])
+        else: 
+            start_right_held_down = current_time
+        if keys[pygame.K_LEFT]:
+            if current_time - time_left_held_down > 200:
+                bloc_bundle[1] = check_collision(bloc_bundle, grille, direction[3])
+                time_left_held_down = current_time
+            if current_time - start_left_held_down > 400:
+                bloc_bundle[1] = check_collision(bloc_bundle, grille, direction[3])
+        else:
+            start_left_held_down = current_time
 
         #Game over
         if grille[0] != [0, 0, 0, 0, 0, 0, 0, 0, 0, 0] and bloc_bundle[1][0] != 0:
             is_game_over = True
 
         #Changement level
-        if score_bundle[1] >= 2:
+        if score_bundle[1] >= 10:
             score_bundle[0] += 1
-            score_bundle[1] = 0
+            score_bundle[1] -= 10
             vitesse -= vitesse*10/100
             current_theme = current_theme + 1 if current_theme < 5 else 1
             pygame.mixer.music.load(playlist[current_theme - 1])
@@ -270,7 +302,7 @@ while game_on:
                     running = not running
                 if is_game_over:
                     is_game_over = False
-                    grille, bloc_bundle, running, score_bundle, vitesse = reset(score_bundle)
+                    grille, bloc_bundle, running, score_bundle, vitesse, current_theme = reset(score_bundle)
 
             #Debug
             if event.type == pygame.KEYDOWN and event.key == pygame.K_p:
@@ -287,7 +319,7 @@ while game_on:
         
         #Fonction de reset de la grille
         if keys[pygame.K_r]:
-            grille, bloc_bundle, running, score_bundle, vitesse = reset(score_bundle)
+            grille, bloc_bundle, running, score_bundle, vitesse, current_theme = reset(score_bundle)
 
     #Écran de game over
     if is_game_over:
@@ -354,14 +386,15 @@ while game_on:
     #Variable pour centrer la grille
     if not is_game_over:
         top_left_corner = [width/2 - 5*pixel, height/2 - 11*pixel]
-        if list(main_window.get_size())[0] == good_screen_resolution[0] and list(main_window.get_size())[1] == good_screen_resolution[1]:
-            pygame.draw.rect(main_window, colors[0][0], pygame.Rect(top_left_corner[0] - int(1/2*pixel), top_left_corner[1] - int(1/2*pixel), 11*pixel, 23*pixel), int(1/2*pixel))
+        pygame.draw.rect(main_window, colors[0][0], pygame.Rect(top_left_corner[0] - int(1/2*pixel), top_left_corner[1] - int(1/2*pixel), 11*pixel, 23*pixel))
         for y in range(len(grille)):
             for x in range(len(grille[y])):
                 pygame.draw.rect(main_window, colors[0][0], pygame.Rect(x*pixel + top_left_corner[0], y*pixel + top_left_corner[1], pixel, pixel), 1)
                 if grille[y][x] != 0:
                     pygame.draw.rect(main_window, colors[current_theme][grille[y][x]-2], pygame.Rect(x*pixel + top_left_corner[0]+1, y*pixel + top_left_corner[1]+1, pixel-2, pixel-2))
                     pygame.draw.rect(main_window, brighter_colors[current_theme][grille[y][x]-2], pygame.Rect(x*pixel + top_left_corner[0] + int(1/4*pixel), y*pixel + top_left_corner[1] + int(1/4*pixel), int(1/4*pixel), int(1/4*pixel)))
+                else:
+                    pygame.draw.rect(main_window, colors[0][1], pygame.Rect(x*pixel + top_left_corner[0]+1, y*pixel + top_left_corner[1]+1, pixel-2, pixel-2))
         #Dessiner la pièce qui bouge
         for y in range(len(bloc_bundle[0])):
             for x in range(len(bloc_bundle[0][y])):
@@ -383,7 +416,7 @@ while game_on:
         main_window.blit(police.render("Score : ", True, colors[0][0]), score_displayRect)
         score_displayRect.topleft = (width/2 + 8*pixel + police.render("Score : ", True, colors[0][0]).get_rect().width, height/2 - 11*pixel)
         main_window.blit(score_display, score_displayRect)
-
+    
         #Afficher le high_score
         high_score_display =  police.render(str(score_bundle[3]), True, score_bundle[5])
         high_score_displayRect = high_score_display.get_rect()

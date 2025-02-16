@@ -11,7 +11,12 @@ last_update = 0
 good_screen_resolution = [1366, 745]
 show_parameters = False
 current_theme = 1
-
+start_up_held_down = 0
+start_left_held_down = 0
+start_right_held_down = 0
+time_up_held_down = 0
+time_left_held_down = 0
+time_right_held_down = 0
 
 #Le standard du jeu pour plus de facilité
 pixel = 30
