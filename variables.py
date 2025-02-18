@@ -9,8 +9,11 @@ is_on_start = True
 is_game_over = False
 last_update = 0
 good_screen_resolution = [1366, 745]
-show_parameters = False
+show_parameters = True
 current_theme = 1
+number_of_lines_to_be_cleared = 10
+scaling = 10
+is_dark = False
 start_up_held_down = 0
 start_left_held_down = 0
 start_right_held_down = 0
@@ -22,7 +25,8 @@ time_right_held_down = 0
 pixel = 30
 
 #Vitesse (en milisecondes)
-vitesse = 300
+base_speed = 350
+vitesse = base_speed
 
 #Level game Tetris
 level_game = 0

@@ -234,9 +234,8 @@ def reset(last_score_bundle):
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     ]
 
-    vitesse = 300
     current_theme = 1
-    return grille, bloc_bundle, running, score_bundle, vitesse, current_theme
+    return grille, bloc_bundle, running, score_bundle, current_theme
 
 #Fonction de calcul de score 
 def score_function(lines_cleared, score_bundle):
