@@ -58,6 +58,7 @@ class Button():
 
     #Fonctionnement des boutons 
     def process_button(self):
+        global mouse_click
         if self.rendering:
             mousePos = pygame.mouse.get_pos()
             #Etat par défaut
@@ -65,15 +66,15 @@ class Button():
             if self.buttonRect.collidepoint(mousePos):
                 #La souris est sur le bouton
                 self.buttonSurface.fill(self.fillColors['hover'])
-                if pygame.mouse.get_pressed(num_buttons=3)[0]:
-                    #Le bouton est pressé
-                    if not self.alreadyPressed:
-                        self.buttonSurface.fill(self.fillColors['pressed'])
-                        self.onclickFunction()
-                        self.alreadyPressed = True
-                else:
+                if pygame.mouse.get_pressed(num_buttons=3)[0] and not mouse_click and not self.alreadyPressed:
+                    self.buttonSurface.fill(self.fillColors['pressed'])
+                    self.onclickFunction()
+                    self.alreadyPressed = True
+                    mouse_click = True
+                elif not pygame.mouse.get_pressed(num_buttons=3)[0]:
                     #Le bouton n'est pas pressé
                     self.alreadyPressed = False
+                    mouse_click = False
             
             #Redéfinir la couleur du texte
             police = pygame.font.Font("MarkaziText-Bold.ttf", pixel)
@@ -383,10 +384,7 @@ while game_on:
                 if not is_game_over:
                     running = not running
                 if is_game_over:
-                    is_game_over = False
-                    grille, bloc_bundle, running, score_bundle, vitesse, current_theme = reset(score_bundle)
-                    pygame.mixer.music.load(playlist[current_theme - 1])
-                    pygame.mixer.music.play()
+                    restart_game()
 
             #Debug
             if event.type == pygame.KEYDOWN and event.key == pygame.K_p:
@@ -403,14 +401,14 @@ while game_on:
         
         #Fonction de reset de la grille
         if keys[pygame.K_r]:
-            grille, bloc_bundle, running, score_bundle, vitesse, current_theme = reset(score_bundle)
+            vitesse = base_speed
+            grille, bloc_bundle, running, score_bundle, current_theme = reset(score_bundle)
             pygame.mixer.music.load(playlist[current_theme - 1])
             pygame.mixer.music.play()
 
     #Écran de game over
     if is_game_over:
         parametres.rendering = False
-        show_parameters = False
         dark_button.rendering = False
 
         #Mettre les boutons restart et quit
@@ -517,7 +515,7 @@ while game_on:
         main_window.blit(high_score_display, high_score_displayRect)
 
         #Afficher le level
-        level_display =  police.render(str(score_bundle[0]), True, colors[0][6])
+        level_display =  police.render(str(score_bundle[0]), True, colors[0][0])
         level_displayRect = level_display.get_rect()
         level_displayRect.topleft = (width/2 + 8*pixel, height/2 - 1*pixel)
         main_window.blit(police.render("Level : ", True, colors[0][0]), level_displayRect)

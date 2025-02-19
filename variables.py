@@ -12,8 +12,10 @@ good_screen_resolution = [1366, 745]
 show_parameters = True
 current_theme = 1
 number_of_lines_to_be_cleared = 10
-scaling = 10
+scaling = 15
 is_dark = False
+mouse_click = False
+
 start_up_held_down = 0
 start_left_held_down = 0
 start_right_held_down = 0
