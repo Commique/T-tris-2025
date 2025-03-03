@@ -19,6 +19,7 @@ buttons = []
 pygame.mixer.init()
 pygame.mixer.music.load(musique_ambiance[0])
 pygame.mixer.music.play()
+pygame.mixer.music.set_volume(1)
 
 #Defintion propriétés des boutons
 class Button():
@@ -120,6 +121,12 @@ def dark_function():
     global is_dark
     is_dark = not is_dark
 
+def mute_function():
+    if pygame.mixer.music.get_volume() > 0 :
+        pygame.mixer.music.set_volume(0)
+    else:
+        pygame.mixer.music.set_volume(1)        
+
 """
 BUG :
 
@@ -207,6 +214,7 @@ def restart_game():
     global is_on_start
     is_on_start = True
     dark_button.rendering = False
+    mute_button.rendering = False
     restart_button.rendering = False
     parametres.rendering = False
     pygame.mixer.music.load(musique_ambiance[0])
@@ -233,6 +241,7 @@ hard_button = Button(0, 0, 0, 0, colors[0][4], brighter_colors[0][4], colors[0][
 restart_button = Button(0, 0, 0, 0, colors[0][4], brighter_colors[0][4], colors[0][3], colors[0][6], "Restart", restart_game, False)
 quit_button = Button(0, 0, 0, 0, colors[0][4], brighter_colors[0][4], colors[0][3], colors[0][6], "Quit", quit_function, False)
 dark_button = Button(0, 0, 0, 0, brighter_colors[0][3], colors[0][3], darker_colors[0][3], colors[0][6], "Dark Mode", dark_function, False)
+mute_button = Button(0, 0, 0, 0, brighter_colors[0][3], colors[0][3], darker_colors[0][3], colors[0][6], "Mute", mute_function, False)
 
 #Fenêtre de lancement
 while is_on_start:
@@ -410,6 +419,7 @@ while game_on:
     if is_game_over:
         parametres.rendering = False
         dark_button.rendering = False
+        mute_button.rendering = False
 
         #Mettre les boutons restart et quit
         #Restart
@@ -562,10 +572,21 @@ while game_on:
                 'pressed': darker_colors[0][3]
                 }
             restart_button.rendering = True
+
+            #Mute
+            mute_button.x = top_left_corner[0] - 11*pixel
+            mute_button.y = top_left_corner[1] + 16*pixel
+            mute_button.width = 6 * pixel
+            mute_button.height = 3 * pixel
+            mute_button.buttonRect = pygame.Rect(mute_button.x, mute_button.y, mute_button.width, mute_button.height)
+            mute_button.buttonSurface = pygame.Surface((mute_button.width, mute_button.height))
+            mute_button.buttonSurf = police.render("Mute", True, colors[0][6])
+            mute_button.rendering = True
         
         else:
             dark_button.rendering = False
             restart_button.rendering = False
+            mute_button.rendering = False
 
         #Redéfinir les caractéristiques du bouton parametres
         parametres.x = width / 2 + 8 * pixel
