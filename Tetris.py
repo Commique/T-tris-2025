@@ -366,7 +366,7 @@ while game_on:
         #Changement level
         if score_bundle[1] >= number_of_lines_to_be_cleared:
             score_bundle[0] += 1
-            score_bundle[1] -= number_of_lines_to_be_cleared
+            score_bundle[1] = 0
             vitesse -= vitesse*scaling/100
             current_theme = current_theme + 1 if current_theme < 5 else 1
             pygame.mixer.music.load(playlist[current_theme - 1])
