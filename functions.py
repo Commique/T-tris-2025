@@ -20,7 +20,7 @@ def debug(grille):
         print(i)
     print("____________________________________________________")
 
-#Fonctions ou on cherche de potentielles collisions
+#Fonctions où on cherche de potentielles collisions
 def check_down_collision(bloc_bundle, grille, score_bundle):
     is_game_over = False
     #On essaie de faire descendre la pièce
