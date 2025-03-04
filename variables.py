@@ -60,7 +60,8 @@ colors = [
     (148, 168, 154),    #Campbrige Blue
     (156, 179, 128),    #Olivine
     (212, 224, 155),    #Vanilla
-    (164, 74, 63)],     #Chestnut
+    (164, 74, 63),      #Chestnut
+    (0,25,40)],         #Dark Blue
     #Thème 1
     [(255, 0, 0),       #Red
     (0, 255, 0),        #Green
