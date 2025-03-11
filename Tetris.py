@@ -131,7 +131,7 @@ def mute_function():
 BUG :
 
 TODO :
-- Paramètres dans le rectangle à gauche avec bouton mute, et mode de jeu
+- Modes de jeu
 """
 
 def start_game(restart=False):
