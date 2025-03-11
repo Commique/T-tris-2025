@@ -332,8 +332,8 @@ while game_on:
                     time_left_held_down = pygame.time.get_ticks()
                     bloc_bundle[1] = check_collision(bloc_bundle, grille, direction[3])
                 if event.key == pygame.K_RETURN:
-                    count = bloc_bundle[4][0]
-                    while bloc_bundle[4][0] == count:
+                    count = bloc_bundle[2][0]
+                    while bloc_bundle[2][0] == count:
                         bloc_bundle, grille, is_game_over, score_bundle = check_down_collision(bloc_bundle, grille, score_bundle)
 
         #Aller vite
@@ -341,19 +341,19 @@ while game_on:
         if keys[pygame.K_DOWN]:
             bloc_bundle, grille, is_game_over, score_bundle = check_down_collision(bloc_bundle, grille, score_bundle)
         if keys[pygame.K_UP]:
-            if current_time - time_up_held_down > 200:
+            if current_time - time_up_held_down > 250:
                 bloc_bundle = check_up_collision(bloc_bundle, grille)
                 time_up_held_down = current_time
         else:
             start_up_held_down = current_time
         if keys[pygame.K_RIGHT]:
-            if current_time - time_right_held_down > 200:
+            if current_time - time_right_held_down > 250:
                 bloc_bundle[1] = check_collision(bloc_bundle, grille, direction[2])
                 time_right_held_down = current_time
         else: 
             start_right_held_down = current_time
         if keys[pygame.K_LEFT]:
-            if current_time - time_left_held_down > 200:
+            if current_time - time_left_held_down > 250:
                 bloc_bundle[1] = check_collision(bloc_bundle, grille, direction[3])
                 time_left_held_down = current_time
         else:
@@ -498,12 +498,12 @@ while game_on:
                     pygame.draw.rect(main_window, colors[current_theme][bloc_bundle[0][y][x]-2], pygame.Rect(x*pixel + top_left_corner[0]+1 + pixel*bloc_bundle[1][1], y*pixel + top_left_corner[1]+1 + pixel*bloc_bundle[1][0], pixel-2, pixel-2))
                     pygame.draw.rect(main_window, brighter_colors[current_theme][bloc_bundle[0][y][x]-2], pygame.Rect(x*pixel + top_left_corner[0] + int(1/4*pixel) + pixel*bloc_bundle[1][1], y*pixel + top_left_corner[1] + int(1/4*pixel) + pixel*bloc_bundle[1][0], int(1/4*pixel), int(1/4*pixel)))
         #Dessiner la pièce qui va venir
-        for y in range(len(blocs[bloc_bundle[4][1][bloc_bundle[4][0]]])):
-            for x in range(len(blocs[bloc_bundle[4][1][bloc_bundle[4][0]]][y])):
-                if blocs[bloc_bundle[4][1][bloc_bundle[4][0]]][y][x] != 0:
+        for y in range(len(blocs[bloc_bundle[2][1][bloc_bundle[2][0]]])):
+            for x in range(len(blocs[bloc_bundle[2][1][bloc_bundle[2][0]]][y])):
+                if blocs[bloc_bundle[2][1][bloc_bundle[2][0]]][y][x] != 0:
                     pygame.draw.rect(main_window, colors[0][0], pygame.Rect((x+8)*pixel + width/2, (y-8)*pixel + height/2, pixel, pixel), 2)
-                    pygame.draw.rect(main_window, colors[current_theme][blocs[bloc_bundle[4][1][bloc_bundle[4][0]]][y][x]-2], pygame.Rect((x+8)*pixel + width/2 + 1, (y-8)*pixel + height/2 + 1, pixel-2, pixel-2))
-                    pygame.draw.rect(main_window, brighter_colors[current_theme][blocs[bloc_bundle[4][1][bloc_bundle[4][0]]][y][x]-2], pygame.Rect((x+8)*pixel + width/2 + int(1/4*pixel), (y-8)*pixel + height/2 + int(1/4*pixel), int(1/4*pixel), int(1/4*pixel)))
+                    pygame.draw.rect(main_window, colors[current_theme][blocs[bloc_bundle[2][1][bloc_bundle[2][0]]][y][x]-2], pygame.Rect((x+8)*pixel + width/2 + 1, (y-8)*pixel + height/2 + 1, pixel-2, pixel-2))
+                    pygame.draw.rect(main_window, brighter_colors[current_theme][blocs[bloc_bundle[2][1][bloc_bundle[2][0]]][y][x]-2], pygame.Rect((x+8)*pixel + width/2 + int(1/4*pixel), (y-8)*pixel + height/2 + int(1/4*pixel), int(1/4*pixel), int(1/4*pixel)))
 
         #Afficher les bons boutons
         quit_button.rendering = False

@@ -50,7 +50,7 @@ def new_piece(bloc_bundle, grille, score_bundle):
     #Ici, la pièce a rencontré un obstacle, on en créé une autre et on nettoie la grille
     #Check for a potential collision at spawn
     #Création d'un potentiel bloc qui doit vérifier des conditions pour venir dans le jeu, sinon Game Over
-    future_bloc = blocs[bloc_bundle[4][1][bloc_bundle[4][0]]]
+    future_bloc = blocs[bloc_bundle[2][1][bloc_bundle[2][0]]]
     future_bloc_position = [0, 3]
     #Ajustement de la position pour le carré
     if future_bloc == blocs[1]:
@@ -62,20 +62,18 @@ def new_piece(bloc_bundle, grille, score_bundle):
                 #Check for Game Over 
                 if grille[future_bloc_position[0]+i][future_bloc_position[1]+u] != 0:
                     is_game_over = True
-    #On inverse les variables avant de remettre à 0 celles du bloc qui bouge 
-    bloc_bundle[2], bloc_bundle[3] = bloc_bundle[0], bloc_bundle[1]
-    bloc_bundle[0] = future_bloc
-    bloc_bundle[1] = future_bloc_position
-    #On ajoute la pièce
-    grille = add_piece(bloc_bundle[2], bloc_bundle[3], grille)
-    #Check remplissage de la grille
-    grille, bloc_bundle[1], lines_cleared = is_in_a_line(grille, bloc_bundle[1])
-    score_bundle = score_function(lines_cleared, score_bundle)
-    bloc_bundle[4][0] += 1
-    if bloc_bundle[4][0] == 7:
-        bloc_bundle[4][0] = 0
-        bloc_bundle[4][1] = bloc_bundle[4][2]
-        sh(bloc_bundle[4][2])
+    if not is_game_over:
+        #On ajoute la pièce
+        grille = add_piece(bloc_bundle[0], bloc_bundle[1], grille)
+        #On inverse les variables avant de remettre à 0 celles du bloc qui bouge
+        bloc_bundle[0], bloc_bundle[1] = future_bloc, future_bloc_position
+        #Check remplissage de la grille
+        grille, bloc_bundle[1], lines_cleared = is_in_a_line(grille, bloc_bundle[1])
+        score_bundle = score_function(lines_cleared, score_bundle)
+        bloc_bundle[2][0] += 1
+        if bloc_bundle[2][0] == 7:
+            bloc_bundle[2][0] = 0
+            sh(bloc_bundle[2][1])
     return bloc_bundle, grille, is_game_over, score_bundle
 
 #Collisions par rotation
