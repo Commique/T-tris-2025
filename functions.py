@@ -198,13 +198,13 @@ def reset(last_score_bundle):
     sh(bloc_list_1)
     sh(bloc_list_2)
     counting_list = [0, bloc_list_1, bloc_list_2]
-    moving_bloc = last_moving_bloc = blocs[counting_list[1][counting_list[0]]]
+    moving_bloc = blocs[counting_list[1][counting_list[0]]]
     counting_list[0] += 1
-    moving_bloc_position = last_moving_bloc_position = [0, 3]   #y, x
+    moving_bloc_position = [0, 3]   #y, x
     if moving_bloc == blocs[1]:
-        moving_bloc_position = last_moving_bloc_position = [0, 4]    
+        moving_bloc_position = [0, 4]
     #Reset Bloc Bundle
-    bloc_bundle = [moving_bloc, moving_bloc_position, last_moving_bloc, last_moving_bloc_position, counting_list]
+    bloc_bundle = [moving_bloc, moving_bloc_position, counting_list]
 
     #Grille
     grille = [
