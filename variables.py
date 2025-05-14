@@ -147,14 +147,13 @@ blocs = [
 bloc_list = [0,1,2,3,4,5,6]
 sh(bloc_list)
 counting_list = [0, bloc_list]
-moving_bloc = last_moving_bloc = blocs[counting_list[1][counting_list[0]]]
+moving_bloc = blocs[counting_list[1][counting_list[0]]]
 counting_list[0] += 1
-moving_bloc_position = last_moving_bloc_position = [0, 3]   #y, x
+moving_bloc_position = [0, 3]   #y, x
 if moving_bloc == blocs[1]:
-    moving_bloc_position = last_moving_bloc_position = [0, 4]    
+    moving_bloc_position = [0, 4]    
 
 bloc_bundle = [moving_bloc, moving_bloc_position, counting_list]
-#Il n'y a pas une redondance entre moving_block et last_moving_block
 
 #Grille
 grille = [
